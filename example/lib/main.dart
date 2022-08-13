@@ -60,7 +60,10 @@ class _MyAppState extends State<MyApp> {
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    getPackageData();
+                    // getPackageData();
+                    UpgradeVersion.getUpgradeVersionInfo().then((value) {
+                      print(value?.toJson());
+                    });
                   },
                   child: const Text('Refresh'),
                 ),
