@@ -8,7 +8,6 @@ class PackageManager {
   static Future<PackageInfo> getPackageInfo() async {
     try {
       Map<dynamic, dynamic>? _data = await _channel.invokeMethod('package-info');
-      print(_data);
       PackageInfo _info = PackageInfo.fromJson(_data);
       return _info;
     } catch(e) {
