@@ -1,11 +1,4 @@
-import 'dart:async';
-import 'package:flutter/services.dart';
+library flutter_upgrade_version;
 
-class FlutterUpgradeVersion {
-  static const MethodChannel _channel = MethodChannel('flutter_upgrade_version');
-
-  static Future<String?> get platformVersion async {
-    final String? version = await _channel.invokeMethod('getPlatformVersion');
-    return version;
-  }
-}
+export 'src/package_manager.dart';
+export 'models/package_info.dart';
