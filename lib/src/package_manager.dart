@@ -1,9 +1,9 @@
 import 'package:flutter/services.dart';
-import 'package:flutter_upgrade_version/config/constant.dart';
+import 'package:flutter_upgrade_version/config/config.dart';
 import 'package:flutter_upgrade_version/models/package_info.dart';
 
 class PackageManager {
-  static const MethodChannel _channel = MethodChannel(Constant.packageInfoChannel);
+  static const MethodChannel _channel = MethodChannel(FlutterUpgradeVersionConfig.packageInfoChannel);
 
   static Future<PackageInfo> getPackageInfo() async {
     try {
