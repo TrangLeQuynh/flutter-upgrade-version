@@ -50,7 +50,7 @@ class UpgradeVersion {
       } else {
         final scriptElements = document.getElementsByTagName('script');
         final infoScriptElement = scriptElements.firstWhere(
-          (elm) => elm.text.contains('key: \'ds:4\''),
+          (elm) => elm.text.contains('key: \'ds:5\''),
         );
 
         final param = infoScriptElement.text.substring(20, infoScriptElement.text.length - 2)
