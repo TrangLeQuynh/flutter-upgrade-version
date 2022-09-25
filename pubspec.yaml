@@ -1,7 +1,7 @@
 name: flutter_upgrade_version
-description: A new flutter plugin project.
-version: 0.0.1
-homepage:
+version: 1.0.0
+description: Support to get package info and update available.
+repository: https://github.com/TrangLeQuynh/flutter-upgrade-version
 
 environment:
   sdk: ">=2.12.2 <3.0.0"
