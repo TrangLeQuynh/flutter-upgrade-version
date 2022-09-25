@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-
-import 'package:flutter/services.dart';
 import 'package:flutter_upgrade_version/flutter_upgrade_version.dart';
 
 void main() {
@@ -40,6 +38,9 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    // UpgradeVersion.getAndroidStoreVersion(PackageInfo(packageName: 'com.timebird.ekyc')).then((value) {
+    //   print(value?.toJson());
+    // });
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
