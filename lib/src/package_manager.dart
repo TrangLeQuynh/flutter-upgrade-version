@@ -1,5 +1,5 @@
 import 'package:flutter/services.dart';
-import 'package:flutter_upgrade_version/config/config.dart';
+import 'package:flutter_upgrade_version/config/flutter_upgrade_version_config.dart';
 import 'package:flutter_upgrade_version/models/package_info.dart';
 
 class PackageManager {

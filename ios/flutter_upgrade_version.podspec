@@ -2,13 +2,16 @@
 # To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html.
 # Run `pod lib lint flutter_upgrade_version.podspec` to validate before publishing.
 #
+require 'yaml'
+
+pubspec = YAML.load_file(File.join('..', 'pubspec.yaml'))
+library_version = pubspec['version'].gsub('+', '-')
+
 Pod::Spec.new do |s|
   s.name             = 'flutter_upgrade_version'
-  s.version          = '1.0.0'
-  s.summary          = 'Support to get package info and update available.'
-  s.description      = <<-DESC
-Support to get package info and update available.
-                       DESC
+  s.version          = library_version
+  s.summary          = pubspec['summary']
+  s.description      = pubspec['description']
   s.homepage         = 'http://example.com'
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'Your Company' => 'email@example.com' }
