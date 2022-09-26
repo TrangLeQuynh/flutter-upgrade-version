@@ -13,9 +13,9 @@ Pod::Spec.new do |s|
   s.summary          = pubspec['summary']
   s.description      = pubspec['description']
   s.homepage         = 'http://example.com'
-  s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Your Company' => 'email@example.com' }
-  s.source           = { :path => '.' }
+  s.license          = { :type=> 'MIT', :file => '../LICENSE' }
+  s.author           = { 'TrangLeQuynh' => 'tranglequynh710@gmail.com' }
+  s.source           = { :git => 'https://github.com/TrangLeQuynh' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
   s.platform = :ios, '9.0'
