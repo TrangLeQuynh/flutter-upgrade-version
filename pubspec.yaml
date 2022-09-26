@@ -1,6 +1,7 @@
 name: flutter_upgrade_version
 version: 1.0.0
-description: Support to get package info and update available.
+summary: Support to get package info and update available.
+description: A Flutter plugin for Android, iOS allowing get informations about package, version info. Support to get Package Information(app name, package name, version, build number), get information of version on store (CH Play and Apple Store).
 repository: https://github.com/TrangLeQuynh/flutter-upgrade-version
 
 environment:

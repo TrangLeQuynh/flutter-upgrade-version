@@ -38,7 +38,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    // UpgradeVersion.getAndroidStoreVersion(PackageInfo(packageName: 'com.timebird.ekyc')).then((value) {
+    // UpgradeVersion.getUpgradeVersionInfo().then((value) {
     //   print(value?.toJson());
     // });
     return MaterialApp(
