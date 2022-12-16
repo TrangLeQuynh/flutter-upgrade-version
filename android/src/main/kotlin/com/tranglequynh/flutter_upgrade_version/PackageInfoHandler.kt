@@ -52,4 +52,8 @@ class PackageInfoHandler :  MethodChannel.MethodCallHandler {
     return info.versionCode.toLong()
   }
 
+  fun stopHandle() {
+    this.packageInfoChannel?.setMethodCallHandler(null)
+  }
+
 }
