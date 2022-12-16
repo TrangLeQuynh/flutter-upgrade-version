@@ -62,8 +62,14 @@ class _MyAppState extends State<MyApp> {
                 ElevatedButton(
                   onPressed: () {
                     // getPackageData();
-                    UpgradeVersion.getUpgradeVersionInfo().then((value) {
-                      print(value?.toJson());
+                    // UpgradeVersion.getUpgradeVersionInfo().then((value) {
+                    //   print(value?.toJson());
+                    // });
+
+                    InAppUpdateManager _manager = InAppUpdateManager();
+                    _manager.checkForUpdate().then((value) {
+                      print("check for update done");
+                      print(value);
                     });
                   },
                   child: const Text('Refresh'),

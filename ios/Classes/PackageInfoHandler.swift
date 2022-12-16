@@ -13,7 +13,7 @@ class PackageInfoHandler {
 
   private func getPakageInfo(_ result: @escaping FlutterResult)-> Void {
     let dictionary = Bundle.main.infoDictionary ?? [:]
-    var info: [String: Any] = [
+    let info: [String: Any?] = [
       "appName" : dictionary["CFBundleDisplayName"] ?? dictionary["CFBundleName"],
       "packageName" : dictionary["CFBundleIdentifier"],
       "version" : dictionary["CFBundleShortVersionString"],

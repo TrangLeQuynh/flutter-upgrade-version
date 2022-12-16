@@ -10,6 +10,8 @@ import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 class FlutterUpgradeVersionPlugin: FlutterPlugin, ActivityAware {
   private var flutterPluginBinding: FlutterPlugin.FlutterPluginBinding? = null
   private var packageInfoHandler: PackageInfoHandler? = null
+  private var inAppUpdateHandler: InAppUpdateHandler? = null
+  private var activity: ActivityPluginBinding? = null
 
   override fun onAttachedToEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
     this.flutterPluginBinding = binding
@@ -20,10 +22,21 @@ class FlutterUpgradeVersionPlugin: FlutterPlugin, ActivityAware {
   }
 
   override fun onAttachedToActivity(binding: ActivityPluginBinding) {
+    activity = binding
+
     packageInfoHandler = PackageInfoHandler(flutterPluginBinding!!.applicationContext, flutterPluginBinding!!.binaryMessenger)
+    inAppUpdateHandler = InAppUpdateHandler(binding.activity, flutterPluginBinding!!.binaryMessenger)
+
+    activity!!.addActivityResultListener(inAppUpdateHandler!!)
   }
 
-  override fun onDetachedFromActivity() {}
+  override fun onDetachedFromActivity() {
+    activity!!.removeActivityResultListener(inAppUpdateHandler!!)
+    activity = null
+
+    packageInfoHandler?.stopHandle()
+    inAppUpdateHandler?.stopHandle()
+  }
 
   override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
     onAttachedToActivity(binding)
@@ -35,5 +48,6 @@ class FlutterUpgradeVersionPlugin: FlutterPlugin, ActivityAware {
 
   companion object {
     const val PACKAGE_INFO_CHANNEL = "com.tranglequynh.flutter-upgrade-version/package-info"
+    const val IN_APP_UPDATE_CHANNEL = "com.tranglequynh.flutter-upgrade-version/in-app-update"
   }
 }
