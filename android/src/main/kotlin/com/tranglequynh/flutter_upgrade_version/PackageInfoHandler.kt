@@ -38,7 +38,7 @@ class PackageInfoHandler :  MethodChannel.MethodCallHandler {
       "appName" to info.applicationInfo.loadLabel(packageManager).toString(),
       "packageName" to info.packageName,
       "version" to info.versionName,
-      "versionCode" to info.versionCode.toString(),
+//      "versionCode" to info.versionCode.toString(),
       "buildNumber" to getLongVersionCode(info).toString()
     )
     result.success(data)

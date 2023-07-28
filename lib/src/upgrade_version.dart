@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_upgrade_version/flutter_upgrade_version.dart';
+import 'package:flutter_upgrade_version/models/package_info.dart';
+import 'package:flutter_upgrade_version/models/version_info.dart';
+import 'package:flutter_upgrade_version/src/package_manager.dart';
 import 'package:flutter_upgrade_version/src/util_service.dart';
 import 'package:html/parser.dart' show parse;
 import 'package:http/http.dart' as http;
@@ -8,7 +10,7 @@ import 'dart:io' show Platform;
 
 enum MethodType { postType, getType }
 
-class UpgradeVersion {
+abstract class UpgradeVersion {
 
   static Future<VersionInfo?> getUpgradeVersionInfo() async {
     PackageInfo _packageInfo = await PackageManager.getPackageInfo();
