@@ -6,3 +6,7 @@
 ## 1.0.1
 
 * Refactor Docs
+
+## 1.0.2
+
+* Provide documentation for classes, functions and other.
