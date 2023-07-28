@@ -1,6 +1,7 @@
 class UtilService {
 
-  ///need ver1 & ver2 is available
+  /// Compare version
+  /// need ver1 & ver2 is available
   static bool? compareVersion(String ver1, String ver2) {
     try {
       List<String> _liVer1 = ver1.split('.');
@@ -18,6 +19,8 @@ class UtilService {
     }
   }
 
+  /// Return True | False
+  /// Check version str is available for Version format. Example: `1.0.0` is available
   static bool validateVersion(String? version) {
     if (version == null) return false;
     RegExp _versionRegex = RegExp(r'^\d{1,3}.\d{1,3}.\d{1,3}');

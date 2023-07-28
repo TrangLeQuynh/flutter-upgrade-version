@@ -1,13 +1,14 @@
+
+/// Flexible updates - Immediate updates
+///
+enum AppUpdateType { flexible, immediate }
+
 /// The interface that implementations of in-app-update must implement
 ///
 /// Support Android
 /// The in-app updates feature is supported on devices running Android 5.0 (API level 21) or higher.
 /// Additionally, in-app updates are only supported for Android mobile devices, Android tablets, and Chrome OS devices.
 ///
-/// Flexible updates - Immediate updates
-///
-enum AppUpdateType { flexible, immediate }
-
 abstract class InAppUpdatePlatform {
 
 
