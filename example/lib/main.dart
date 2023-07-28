@@ -24,7 +24,6 @@ class _MyAppState extends State<MyApp> {
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> getPackageData() async {
-    String platformVersion;
     // Platform messages may fail, so we use a try/catch PlatformException.
     // We also handle the message potentially returning null.
     // If the widget was removed from the tree while the asynchronous platform
@@ -68,8 +67,8 @@ class _MyAppState extends State<MyApp> {
 
                     InAppUpdateManager _manager = InAppUpdateManager();
                     _manager.checkForUpdate().then((value) {
-                      print("check for update done");
-                      print(value);
+                      debugPrint("check for update done");
+                      debugPrint('$value');
                     });
                   },
                   child: const Text('Refresh'),
