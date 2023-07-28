@@ -5,7 +5,7 @@ description: Support to get Package Information(app name, package name, version,
 repository: https://github.com/TrangLeQuynh/flutter-upgrade-version
 
 environment:
-  sdk: ">=2.12.2 <3.0.0"
+  sdk: ">=2.12.2 <4.0.0"
   flutter: ">=2.5.0"
 
 dependencies:

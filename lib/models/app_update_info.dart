@@ -1,3 +1,5 @@
+/// UpdateAvailability
+/// Enum represents the state of InAppUpdate
 enum UpdateAvailability {
   unknown, //0
   updateNotAvailable, //1
@@ -5,8 +7,9 @@ enum UpdateAvailability {
   developerTriggeredUpdateInProgress  //3
 }
 
+/// AppUpdateInfo
 class AppUpdateInfo {
-
+  /// The package name
   String? _packageName;
 
   /// Check for update availability
@@ -26,6 +29,7 @@ class AppUpdateInfo {
   /// To determine priority, Google Play uses an integer value between 0 and 5, with 0 being the default and 5 being the highest priority.
   int? _updatePriority;
 
+  /// Contructs an instance
   AppUpdateInfo({
     String? packageName,
     int? updateAvailability,
@@ -42,20 +46,27 @@ class AppUpdateInfo {
     _updatePriority = updatePriority;
   }
 
+  /// Getter & setter
   String get packageName => _packageName ?? '';
   set packageName(String? value) => _packageName = value;
+
   int get updateAvailability => _updateAvailability ?? 0;
   set updateAvailability(int? value) => _updateAvailability = value;
+
   bool get immediateAllowed => _immediateAllowed ?? false;
   set immediateAllowed(bool? value) => _immediateAllowed = value;
+
   bool get flexibleAllowed => _flexibleAllowed ?? false;
   set flexibleAllowed(bool? value) => _flexibleAllowed = value;
+
   num get clientVersionStalenessDays => _clientVersionStalenessDays ?? 0;
   set clientVersionStalenessDays(num? value) => _clientVersionStalenessDays = value;
+
   int get updatePriority => _updatePriority ?? 0;
   set updatePriority(int? value) => _updatePriority = value;
 
 
+  /// An instance of the AppUpdateInfo from json
   AppUpdateInfo.fromJson(Map<dynamic, dynamic>? json) {
     json ??= {};
     _packageName = json['packageName'];
@@ -66,6 +77,7 @@ class AppUpdateInfo {
     _updatePriority = json['updatePriority'];
   }
 
+  /// Converts [instance] to a JSON object.
   Map<String, dynamic> toJson() => <String, dynamic>{
     'packageName' : _packageName,
     'updateAvailability' : _updateAvailability,

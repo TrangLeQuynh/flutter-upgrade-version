@@ -8,10 +8,15 @@ import 'package:html/parser.dart' show parse;
 import 'package:http/http.dart' as http;
 import 'dart:io' show Platform;
 
+/// Method Type support
 enum MethodType { postType, getType }
 
+/// UpgradeVersion
+///
 abstract class UpgradeVersion {
 
+  /// Get Upgrade version
+  /// Support Android & iOS
   static Future<VersionInfo?> getUpgradeVersionInfo() async {
     PackageInfo _packageInfo = await PackageManager.getPackageInfo();
     if (Platform.isIOS) return getiOSStoreVersion(_packageInfo);
@@ -20,6 +25,8 @@ abstract class UpgradeVersion {
     return null;
   }
 
+  /// Get Upgrade version
+  /// Support Only Android
   static Future<VersionInfo?> getAndroidStoreVersion(PackageInfo packageInfo) async {
     final id = packageInfo.packageName;
     final uri = Uri.https("play.google.com", "/store/apps/details", {"id": id, "hl": "en"});
@@ -79,6 +86,8 @@ abstract class UpgradeVersion {
     }
   }
 
+  /// Get Upgrade version
+  /// Support Only iOS
   static Future<VersionInfo> getiOSStoreVersion(PackageInfo packageInfo) async {
     final id = packageInfo.packageName;
     final parameters = {"bundleId": id};
@@ -93,6 +102,7 @@ abstract class UpgradeVersion {
     );
   }
 
+  /// Call API to get version on Store
   static Future<Map<String, dynamic>> getVersion(Uri uri, MethodType methodType) async {
     try {
       late final http.Response response;
@@ -113,6 +123,7 @@ abstract class UpgradeVersion {
     }
   }
 
+  /// _getAvailableVersion
   static Future<Map<String, dynamic>> _getAvailableVersion(Map<String, dynamic> body1, Map<String, dynamic> body2) async {
     bool _status1 = UtilService.validateVersion(body1['storeVersion']);
     bool _status2 = UtilService.validateVersion(body2['storeVersion']);
