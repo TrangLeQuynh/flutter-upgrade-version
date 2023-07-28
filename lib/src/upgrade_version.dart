@@ -95,13 +95,13 @@ abstract class UpgradeVersion {
 
   static Future<Map<String, dynamic>> getVersion(Uri uri, MethodType methodType) async {
     try {
-      late final _response;
+      late final http.Response response;
       if (methodType == MethodType.getType) {
-        _response = await http.get(uri);
+        response = await http.get(uri);
       } else {
-        _response = await http.post(uri);
+        response = await http.post(uri);
       }
-      final _jsonObj = json.decode(_response.body);
+      final _jsonObj = json.decode(response.body);
       String _version = _jsonObj['results'][0]['version'];
       return {
         'storeVersion' : _version,
