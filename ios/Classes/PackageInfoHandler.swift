@@ -5,13 +5,14 @@ class PackageInfoHandler {
     channel.setMethodCallHandler { call, result in
       switch call.method {
         case "package-info":
-          self.getPakageInfo(result)
-        default: break
+          self.getPackageInfo(result)
+        default:
+          break
       }
     }
   }
 
-  private func getPakageInfo(_ result: @escaping FlutterResult)-> Void {
+  private func getPackageInfo(_ result: @escaping FlutterResult)-> Void {
     let dictionary = Bundle.main.infoDictionary ?? [:]
     let info: [String: Any?] = [
       "appName" : dictionary["CFBundleDisplayName"] ?? dictionary["CFBundleName"],
