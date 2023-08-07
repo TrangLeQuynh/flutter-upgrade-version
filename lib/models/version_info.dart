@@ -39,11 +39,11 @@ class VersionInfo {
 
   /// Return True if Version 1 is bigger than Version 2, otherwise
   ///
-  bool _checkBigger(String? ver1, String? ver2) {
+  bool? _checkBigger(String? ver1, String? ver2) {
     if (!UtilService.validateVersion(ver1) || !UtilService.validateVersion(ver2)) {
-      return false;
+      return null;
     }
-    return UtilService.compareVersion(ver1!, ver2!) ?? false;
+    return UtilService.compareVersion(ver1!, ver2!);
   }
 
 
@@ -59,8 +59,8 @@ class VersionInfo {
     _storeVersion = storeVersion;
     _appStoreLink = appStoreLink;
     _releaseNotes = releaseNotes;
-    _isReviewing = _checkBigger(localVersion, storeVersion);
-    _canUpdate = _checkBigger(storeVersion, localVersion);
+    _isReviewing = _checkBigger(localVersion, storeVersion) ?? true;
+    _canUpdate = _checkBigger(storeVersion, localVersion) ?? false;
   }
 
   /// Converts [instance] to a JSON object.

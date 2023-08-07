@@ -10,3 +10,7 @@
 ## 1.0.2
 
 * Provide documentation for classes, functions and other.
+
+## 1.0.3
+
+* isReviewing: default is True
