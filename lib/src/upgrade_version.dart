@@ -132,7 +132,7 @@ abstract class UpgradeVersion {
     if (!_status2) return body1;
     String _ver1 = body1['storeVersion'] as String;
     String _ver2 = body2['storeVersion'] as String;
-    bool? _value = UtilService.compareVersion(_ver1, _ver2);
+    bool? _value = UtilService.compareVersion(_ver1, _ver2) == 1;
     if (_value == false) return body2;
     return body1;
   }
