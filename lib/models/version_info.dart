@@ -43,7 +43,7 @@ class VersionInfo {
     if (!UtilService.validateVersion(ver1) || !UtilService.validateVersion(ver2)) {
       return null;
     }
-    return UtilService.compareVersion(ver1!, ver2!);
+    return UtilService.compareVersion(ver1!, ver2!) == 1;
   }
 
 

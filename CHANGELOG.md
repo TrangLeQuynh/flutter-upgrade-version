@@ -14,3 +14,7 @@
 ## 1.0.3
 
 * isReviewing: default is True
+
+## 1.0.4
+
+* Add the equal state when comparing 2 version
