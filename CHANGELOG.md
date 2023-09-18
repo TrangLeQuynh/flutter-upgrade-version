@@ -27,3 +27,7 @@
 ## 1.0.6
 
 * Add availableVersionCode, installStatus in AppUpdateInfo model
+
+## 1.0.7
+
+* Fix bug "duplicate - start an update"
