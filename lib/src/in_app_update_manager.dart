@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import '../config/flutter_upgrade_version_config.dart';
 import '../models/app_update_info.dart';
@@ -13,16 +14,29 @@ class InAppUpdateManager implements InAppUpdatePlatform {
   /// checkForUpdate
   /// Return AppUpdateInfo
   @override
-  Future<AppUpdateInfo> checkForUpdate() async {
-    Map<dynamic, dynamic>? _value =
-        await _channel.invokeMethod('checkForUpdate');
-    return AppUpdateInfo.fromJson(_value);
+  Future<AppUpdateInfo?> checkForUpdate() async {
+    try {
+      Map<dynamic, dynamic>? _value =
+          await _channel.invokeMethod('checkForUpdate');
+      return AppUpdateInfo.fromJson(_value);
+    } on PlatformException catch (e) {
+      debugPrint('${e.code} : ${e.message}');
+      return null;
+    }
   }
 
   /// startAnUpdate
   @override
-  Future<void> startAnUpdate(
+  Future<String?> startAnUpdate(
       {AppUpdateType type = AppUpdateType.flexible}) async {
-    await _channel.invokeMethod('startAnUpdate', {'appUpdateType': type.index});
+    try {
+      await _channel
+          .invokeMethod('startAnUpdate', {'appUpdateType': type.index});
+      return null;
+    } on PlatformException catch (e) {
+      return e.message;
+    } on Exception catch (e) {
+      return 'Exception: ${e.toString()}';
+    }
   }
 }

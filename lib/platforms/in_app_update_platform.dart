@@ -11,9 +11,9 @@ abstract class InAppUpdatePlatform {
   /// Before requesting an update, check if there is an update available for your app.
   /// Using AppUpdateManager to check for update
   ///
-  Future<dynamic> checkForUpdate();
+  Future<AppUpdateInfo?> checkForUpdate();
 
   /// After you confirm that an update is available, you can request an update
   /// Android support: Flexible updates and Immediate updates
-  Future<void> startAnUpdate({AppUpdateType type = AppUpdateType.flexible});
+  Future<String?> startAnUpdate({AppUpdateType type = AppUpdateType.flexible});
 }

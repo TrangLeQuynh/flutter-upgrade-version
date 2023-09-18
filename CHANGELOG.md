@@ -23,3 +23,7 @@
 
 * Deprecated UpgradeVersion.getAndroidStoreVersion
 * Use InAppUpdateManager for Android Device instead.
+
+## 1.0.6
+
+* Add availableVersionCode, installStatus in AppUpdateInfo model

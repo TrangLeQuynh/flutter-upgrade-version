@@ -39,6 +39,13 @@ class AppUpdateInfo {
   /// To determine priority, Google Play uses an integer value between 0 and 5, with 0 being the default and 5 being the highest priority.
   int? _updatePriority;
 
+  /// If an update is available or in progress, this method returns the version code of the update.
+  /// If no updates are available, this method returns an arbitrary value.
+  int? _availableVersionCode;
+
+  ///Returns the progress status of the update.
+  int? _installStatus;
+
   /// Contructs an instance
   AppUpdateInfo({
     String? packageName,
@@ -47,6 +54,8 @@ class AppUpdateInfo {
     bool? flexibleAllowed,
     num? clientVersionStalenessDays,
     int? updatePriority,
+    int? availableVersionCode,
+    int? installStatus,
   }) {
     _packageName = packageName;
     _updateAvailability = updateAvailability;
@@ -54,6 +63,8 @@ class AppUpdateInfo {
     _flexibleAllowed = flexibleAllowed;
     _clientVersionStalenessDays = clientVersionStalenessDays;
     _updatePriority = updatePriority;
+    _availableVersionCode = availableVersionCode;
+    _installStatus = installStatus;
   }
 
   /// Getter & setter
@@ -78,6 +89,12 @@ class AppUpdateInfo {
   int get updatePriority => _updatePriority ?? 0;
   set updatePriority(int? value) => _updatePriority = value;
 
+  int get availableVersionCode => _availableVersionCode ?? 0;
+  set availableVersionCode(int? value) => _availableVersionCode = value;
+
+  int get installStatus => _installStatus ?? 0;
+  set installStatus(int? value) => _installStatus = value;
+
   /// An instance of the AppUpdateInfo from json
   AppUpdateInfo.fromJson(Map<dynamic, dynamic>? json) {
     json ??= {};
@@ -93,6 +110,8 @@ class AppUpdateInfo {
     _flexibleAllowed = json['flexibleAllowed'];
     _clientVersionStalenessDays = json['clientVersionStalenessDays'];
     _updatePriority = json['updatePriority'];
+    _availableVersionCode = json['availableVersionCode'];
+    _installStatus = json['installStatus'];
   }
 
   /// Converts [instance] to a JSON object.
@@ -103,5 +122,7 @@ class AppUpdateInfo {
         'flexibleAllowed': _flexibleAllowed,
         'clientVersionStalenessDays': _clientVersionStalenessDays,
         'updatePriority': _updatePriority,
+        'availableVersionCode': _availableVersionCode,
+        'installStatus': _installStatus,
       };
 }
