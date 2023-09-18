@@ -63,23 +63,27 @@ class _MyAppState extends State<MyApp> {
                       _packageInfo = await PackageManager.getPackageInfo();
                       if (Platform.isAndroid) {
                         InAppUpdateManager manager = InAppUpdateManager();
-                        AppUpdateInfo appUpdateInfo =
+                        AppUpdateInfo? appUpdateInfo =
                             await manager.checkForUpdate();
+                        if (appUpdateInfo == null) return;
                         if (appUpdateInfo.updateAvailability ==
                             UpdateAvailability
                                 .developerTriggeredUpdateInProgress) {
                           //If an in-app update is already running, resume the update.
-                          await manager.startAnUpdate(
+                          String? message = await manager.startAnUpdate(
                               type: AppUpdateType.immediate);
+                          debugPrint(message ?? '');
                         } else if (appUpdateInfo.updateAvailability ==
                             UpdateAvailability.updateAvailable) {
                           ///Update available
                           if (appUpdateInfo.immediateAllowed) {
-                            await manager.startAnUpdate(
+                            String? message = await manager.startAnUpdate(
                                 type: AppUpdateType.immediate);
+                            debugPrint(message ?? '');
                           } else if (appUpdateInfo.flexibleAllowed) {
-                            await manager.startAnUpdate(
+                            String? message = await manager.startAnUpdate(
                                 type: AppUpdateType.flexible);
+                            debugPrint(message ?? '');
                           } else {
                             debugPrint(
                                 'Update available. Immediate & Flexible Update Flow not allow');

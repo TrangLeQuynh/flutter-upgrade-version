@@ -1,5 +1,5 @@
 name: flutter_upgrade_version
-version: 1.0.5
+version: 1.0.6
 summary: Support to get package info and update available.
 description: Support to get Package Information(app name, package name, version, build number), get information of version on store(Apple Store) and In-app Update.
 repository: https://github.com/TrangLeQuynh/flutter-upgrade-version

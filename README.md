@@ -1,6 +1,6 @@
 # Flutter Upgrade Version Package
 
-A Flutter plugin for Android, iOS allowing get informations about package, version info.
+A Flutter plugin for Android, iOS allowing get information about package, version info.
 
 |                | Android | iOS      |
 |----------------|:-:|:-:|
@@ -11,7 +11,7 @@ A Flutter plugin for Android, iOS allowing get informations about package, versi
 
 * Get Package Information (app name, package name, version, build number).
 * Get Information of Version at store (CH Play, Apple Store).
-* Support In App Update - Android (comming soon)
+* Support In App Update - Android
 
 ## Installation
 
@@ -19,7 +19,7 @@ First, add `flutter_upgrade_version` as a [dependency in your pubspec.yaml file]
 
 ```dart
     dependencies
-        flutter_upgrade_version: ^1.0.1
+        flutter_upgrade_version: ^1.0.6
 ```
 
 ## In-app Updates
@@ -71,18 +71,22 @@ VersionInfo? _versionInfo = await UpgradeVersion.getUpgradeVersionInfo();
 /// Android
 if (Platform.isAndroid) {
   InAppUpdateManager manager = InAppUpdateManager();
-  AppUpdateInfo appUpdateInfo = await manager.checkForUpdate();
+  AppUpdateInfo? appUpdateInfo = await manager.checkForUpdate();
+  if (appUpdateInfo == null) return; //Exception
   if (appUpdateInfo.updateAvailability == UpdateAvailabilitydeveloperTriggeredUpdateInProgress) {
     //If an in-app update is already running, resume the update.
-    await manager.startAnUpdate(type: AppUpdateType.immediate);
+    String? message = await manager.startAnUpdate(type: AppUpdateType.immediate);
+    ///message return null when run update success 
   } else if (appUpdateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
     ///Update available
     if (appUpdateInfo.immediateAllowed) {
       debugPrint('Start an immediate update');
-      await manager.startAnUpdate(type: AppUpdateType.immediate);
+      String? message = await manager.startAnUpdate(type: AppUpdateType.immediate);
+      ///message return null when run update success 
     } else if (appUpdateInfo.flexibleAllowed) {
       debugPrint('Start an flexible update');
-      await manager.startAnUpdate(type: AppUpdateType.flexible);
+      String? message = await manager.startAnUpdate(type: AppUpdateType.flexible);
+      ///message return null when run update success
     } else {
       debugPrint('Update available. Immediate & Flexible Update Flow not allow');
     }
