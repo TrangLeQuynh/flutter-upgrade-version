@@ -1,10 +1,21 @@
+/// Flexible updates - Immediate updates
+/// Represents the type of the update flow.
+enum AppUpdateType { flexible, immediate }
+
 /// UpdateAvailability
 /// Enum represents the state of InAppUpdate
 enum UpdateAvailability {
-  unknown, //0
-  updateNotAvailable, //1
-  updateAvailable, //2
-  developerTriggeredUpdateInProgress  //3
+  ///value: 0
+  unknown,
+
+  ///value: 1
+  updateNotAvailable,
+
+  ///value: 2
+  updateAvailable,
+
+  ///value: 3
+  developerTriggeredUpdateInProgress
 }
 
 /// AppUpdateInfo
@@ -13,16 +24,15 @@ class AppUpdateInfo {
   String? _packageName;
 
   /// Check for update availability
-  int? _updateAvailability;
+  UpdateAvailability? _updateAvailability;
 
-  /// Immediate Updates
+  /// Allow to apply a Immediate Update
   bool? _immediateAllowed;
 
-  /// Flexible Updates
+  /// Allow to apply a Flexible Update
   bool? _flexibleAllowed;
 
-  /// Check update staleless
-  /// Use to check the number of days since the update became available on the Play Store
+  /// Use `clientVersionStalenessDays` to check the number of days since the update became available on the Play Store
   num? _clientVersionStalenessDays;
 
   /// Check update priority
@@ -32,7 +42,7 @@ class AppUpdateInfo {
   /// Contructs an instance
   AppUpdateInfo({
     String? packageName,
-    int? updateAvailability,
+    UpdateAvailability? updateAvailability,
     bool? immediateAllowed,
     bool? flexibleAllowed,
     num? clientVersionStalenessDays,
@@ -50,8 +60,10 @@ class AppUpdateInfo {
   String get packageName => _packageName ?? '';
   set packageName(String? value) => _packageName = value;
 
-  int get updateAvailability => _updateAvailability ?? 0;
-  set updateAvailability(int? value) => _updateAvailability = value;
+  UpdateAvailability get updateAvailability =>
+      _updateAvailability ?? UpdateAvailability.unknown;
+  set updateAvailability(UpdateAvailability? value) =>
+      _updateAvailability = value;
 
   bool get immediateAllowed => _immediateAllowed ?? false;
   set immediateAllowed(bool? value) => _immediateAllowed = value;
@@ -60,17 +72,23 @@ class AppUpdateInfo {
   set flexibleAllowed(bool? value) => _flexibleAllowed = value;
 
   num get clientVersionStalenessDays => _clientVersionStalenessDays ?? 0;
-  set clientVersionStalenessDays(num? value) => _clientVersionStalenessDays = value;
+  set clientVersionStalenessDays(num? value) =>
+      _clientVersionStalenessDays = value;
 
   int get updatePriority => _updatePriority ?? 0;
   set updatePriority(int? value) => _updatePriority = value;
-
 
   /// An instance of the AppUpdateInfo from json
   AppUpdateInfo.fromJson(Map<dynamic, dynamic>? json) {
     json ??= {};
     _packageName = json['packageName'];
-    _updateAvailability = json['updateAvailability'];
+    try {
+      //a value from UpdateAvailability
+      _updateAvailability =
+          UpdateAvailability.values[json['updateAvailability'] ?? 0];
+    } catch (e) {
+      _updateAvailability = UpdateAvailability.unknown;
+    }
     _immediateAllowed = json['immediateAllowed'];
     _flexibleAllowed = json['flexibleAllowed'];
     _clientVersionStalenessDays = json['clientVersionStalenessDays'];
@@ -79,11 +97,11 @@ class AppUpdateInfo {
 
   /// Converts [instance] to a JSON object.
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'packageName' : _packageName,
-    'updateAvailability' : _updateAvailability,
-    'immediateAllowed' : _immediateAllowed,
-    'flexibleAllowed' : _flexibleAllowed,
-    'clientVersionStalenessDays' : _clientVersionStalenessDays,
-    'updatePriority' : _updatePriority,
-  };
+        'packageName': _packageName,
+        'updateAvailability': _updateAvailability,
+        'immediateAllowed': _immediateAllowed,
+        'flexibleAllowed': _flexibleAllowed,
+        'clientVersionStalenessDays': _clientVersionStalenessDays,
+        'updatePriority': _updatePriority,
+      };
 }

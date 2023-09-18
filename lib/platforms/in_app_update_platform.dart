@@ -1,7 +1,4 @@
-
-/// Flexible updates - Immediate updates
-///
-enum AppUpdateType { flexible, immediate }
+import '../models/app_update_info.dart';
 
 /// The interface that implementations of in-app-update must implement
 ///
@@ -10,8 +7,6 @@ enum AppUpdateType { flexible, immediate }
 /// Additionally, in-app updates are only supported for Android mobile devices, Android tablets, and Chrome OS devices.
 ///
 abstract class InAppUpdatePlatform {
-
-
   /// Check for update availability
   /// Before requesting an update, check if there is an update available for your app.
   /// Using AppUpdateManager to check for update
@@ -20,5 +15,5 @@ abstract class InAppUpdatePlatform {
 
   /// After you confirm that an update is available, you can request an update
   /// Android support: Flexible updates and Immediate updates
-  Future<void> startAnUpdate({ AppUpdateType type = AppUpdateType.flexible });
+  Future<void> startAnUpdate({AppUpdateType type = AppUpdateType.flexible});
 }

@@ -51,9 +51,9 @@ class PackageInfo {
 
   /// Json
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'appName' : _appName,
-    'packageName' : _packageName,
-    'version' : _version,
-    'buildNumber' : _buildNumber,
-  };
+        'appName': _appName,
+        'packageName': _packageName,
+        'version': _version,
+        'buildNumber': _buildNumber,
+      };
 }

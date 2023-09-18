@@ -18,3 +18,8 @@
 ## 1.0.4
 
 * Add the equal state when comparing 2 version
+
+## 1.0.5
+
+* Deprecated UpgradeVersion.getAndroidStoreVersion
+* Use InAppUpdateManager for Android Device instead.

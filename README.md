@@ -22,6 +22,27 @@ First, add `flutter_upgrade_version` as a [dependency in your pubspec.yaml file]
         flutter_upgrade_version: ^1.0.1
 ```
 
+## In-app Updates
+
+The in-app updates feature is supported on devices running Android 5.0 (API level 21) or higher. Additionally, in-app updates are only supported for Android mobile devices, Android tablets, and ChromeOS devices.
+
+Your app can use the Google Play Core libraries to support the following UX flows for in-app updates:
+
+### Flexible Update Flows
+
+Flexible updates provide background download and installation with graceful state monitoring. This UX flow is appropriate when it's acceptable for the user to use the app while downloading the update. For example, you might want to encourage users to try a new feature that's not critical to the core functionality of your app.
+
+![Flexible Flow](assets/flexible_flow.png)
+
+
+### Immediate Update Flows
+
+Immediate updates are fullscreen UX flows that require the user to update and restart the app in order to continue using it. This UX flow is best for cases where an update is critical to the core functionality of your app. After a user accepts an immediate update, Google Play handles the update installation and app restart.
+
+![Immediate Flow](assets/immediate_flow.png)
+
+
+
 ## Usage
 
 You can use FlutterUpgradeVersion to get information about the package.
@@ -47,14 +68,32 @@ You can get the app information on the Store through ID - package_name. You need
 ///This function is a combination of two functions:  UpgradeVersion.getAndroidStoreVersion &  UpgradeVersion.getiOSStoreVersion
 VersionInfo? _versionInfo = await UpgradeVersion.getUpgradeVersionInfo();
 
-///
-///Android
-///I don't recommend people to use this function. It's not suitable. This function will fail if CH Play changes the HTML on the store
-VersionInfo? _versionInfo1 = await UpgradeVersion.getAndroidStoreVersion(_packageInfo);
+/// Android
+if (Platform.isAndroid) {
+  InAppUpdateManager manager = InAppUpdateManager();
+  AppUpdateInfo appUpdateInfo = await manager.checkForUpdate();
+  if (appUpdateInfo.updateAvailability == UpdateAvailabilitydeveloperTriggeredUpdateInProgress) {
+    //If an in-app update is already running, resume the update.
+    await manager.startAnUpdate(type: AppUpdateType.immediate);
+  } else if (appUpdateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
+    ///Update available
+    if (appUpdateInfo.immediateAllowed) {
+      debugPrint('Start an immediate update');
+      await manager.startAnUpdate(type: AppUpdateType.immediate);
+    } else if (appUpdateInfo.flexibleAllowed) {
+      debugPrint('Start an flexible update');
+      await manager.startAnUpdate(type: AppUpdateType.flexible);
+    } else {
+      debugPrint('Update available. Immediate & Flexible Update Flow not allow');
+    }
+  }
+}
 
 ///
 ///iOS
-VersionInfo? _versionInfo2 = await UpgradeVersion.getiOSStoreVersion(_packageInfo);
+if (Platform.isIOS) {
+  VersionInfo? _versionInfo2 = await UpgradeVersion.getiOSStoreVersion(_packageInfo);
+}
 
 ```
 

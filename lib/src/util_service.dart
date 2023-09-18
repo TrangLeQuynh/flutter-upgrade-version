@@ -1,12 +1,11 @@
 class UtilService {
-
   /// Compare version
   /// need ver1 & ver2 is available
   static int? compareVersion(String ver1, String ver2) {
     try {
       List<String> _liVer1 = ver1.split('.');
       List<String> _liVer2 = ver2.split('.');
-      for (int i = 0; i < _liVer1.length; ++ i) {
+      for (int i = 0; i < _liVer1.length; ++i) {
         if (int.parse(_liVer1[i]) > int.parse(_liVer2[i])) {
           return 1;
         } else if (int.parse(_liVer1[i]) < int.parse(_liVer2[i])) {
