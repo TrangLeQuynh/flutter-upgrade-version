@@ -19,7 +19,7 @@ First, add `flutter_upgrade_version` as a [dependency in your pubspec.yaml file]
 
 ```dart
     dependencies
-        flutter_upgrade_version: ^1.0.6
+        flutter_upgrade_version: ^1.0.8
 ```
 
 ## In-app Updates
@@ -115,3 +115,13 @@ With <span style='color:blue'>VersionInfo</span> class, I have provided informat
 
 * **releaseNotes**: The notes of version on the store.
 
+
+### In-app Update message
+
+| Message | Description |
+|----------------|----------------|
+| **MSG_USER_HAS_DENIED_OR_CANCELED_THE_UPDATE** | The user has denied or canceled the update. | 
+| **MSG_RESULT_IN_APP_UPDATE_FAILED** | Some other error prevented either the user from providing consent or the update from proceeding.|
+| **MSG_APP_UPDATE_TYPE_NO_SUPPORT** | AppUpdateType not support|
+| **MSG_REQUIRE_CHECK_FOR_UPDATE** | Required call `checkForUpdate` before `startAnUpdate` |
+| **MSG_UPDATE_LISTENER_ERROR**| |

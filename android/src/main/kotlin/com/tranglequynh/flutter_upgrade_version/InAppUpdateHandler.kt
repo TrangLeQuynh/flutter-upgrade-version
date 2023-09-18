@@ -47,9 +47,7 @@ class InAppUpdateHandler : MethodChannel.MethodCallHandler, PluginRegistry.Activ
           pendingResult?.error("RESULT_IN_APP_UPDATE_FAILED", "MSG_RESULT_IN_APP_UPDATE_FAILED", null)
         }
       }
-      pendingResult?.let {
-        pendingResult = null
-      }
+      pendingResult = null
       return true
     }
     // If the update is cancelled or fails,
@@ -95,31 +93,29 @@ class InAppUpdateHandler : MethodChannel.MethodCallHandler, PluginRegistry.Activ
   }
 
   /// After you confirm that an update is available, you can request an update using
-  /// AppUpdateManager.startUpdateFlowForResult()
   private fun startAnUpdate(call: MethodCall, result: MethodChannel.Result) {
-    if (pendingResult != null) {
-      result.error("ERROR", "MSG_PROCESSING_UPDATE_IN_APP", null)
-    }
-    if (appUpdateManager != null || appUpdateInfo != null) {
-      result.error("ERROR", "MSG_REQUIRE_CHECK_FOR_UPDATE", null)
-    }
     val args = call.arguments as Map<String, Any>
     val type = when(args["appUpdateType"] as Int) {
       0 -> AppUpdateType.FLEXIBLE
       1 -> AppUpdateType.IMMEDIATE
       else -> null
     }
-
-    if (type == null) {
+    requireNotNull(type) {
       result.error("ERROR", "MSG_APP_UPDATE_TYPE_NO_SUPPORT", null)
-      return
+    }
+    requireNotNull(appUpdateManager) {
+      result.error("ERROR", "MSG_REQUIRE_CHECK_FOR_UPDATE", null)
+    }
+    requireNotNull(appUpdateInfo) {
+      result.error("ERROR", "MSG_REQUIRE_CHECK_FOR_UPDATE", null)
     }
     pendingResult = result
     if (type == AppUpdateType.FLEXIBLE) {
       // Before starting an update, register a listener for updates.
       appUpdateManager?.registerListener(updateListener)
     }
-    appUpdateManager!!.startUpdateFlow(
+    //Starts the desired update flow.
+    appUpdateManager!!.startUpdateFlowForResult(
       // Pass the intent that is returned by 'getAppUpdateInfo()'.
       appUpdateInfo!!,
       // an activity result launcher registered via registerForActivityResult
@@ -129,7 +125,8 @@ class InAppUpdateHandler : MethodChannel.MethodCallHandler, PluginRegistry.Activ
         //Allows the update flow to delete Asset Packs from the app's storage before attempting to update the app, in case of insufficient storage.
         //.setAllowAssetPackDeletion(true) // Default false
         .build(),
-    );
+      REQUEST_CODE_START_IN_APP_UPDATE
+    )
   }
 
   private fun unregisterUpdate() {
@@ -142,16 +139,12 @@ class InAppUpdateHandler : MethodChannel.MethodCallHandler, PluginRegistry.Activ
       // After the update is downloaded, show a notification
       // and request user confirmation to restart the app.
       pendingResult?.success(null)
-      pendingResult?.let {
-        pendingResult = null
-      }
+      pendingResult = null
       appUpdateManager?.completeUpdate()
       unregisterUpdate()
     } else if (it.installErrorCode() != InstallErrorCode.NO_ERROR) {
       pendingResult?.error("ERROR", "MSG_UPDATE_LISTENER_ERROR", null)
-      pendingResult?.let {
-        pendingResult = null
-      }
+      pendingResult = null
       unregisterUpdate()
     }
   }

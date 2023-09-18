@@ -31,3 +31,7 @@
 ## 1.0.7
 
 * Fix bug "duplicate - start an update"
+
+## 1.0.8
+
+* Fix issue when start an update
