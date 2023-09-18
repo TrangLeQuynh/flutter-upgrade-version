@@ -5,6 +5,7 @@ import android.content.Intent
 import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.*
 import io.flutter.plugin.common.BinaryMessenger
@@ -118,6 +119,17 @@ class InAppUpdateHandler : MethodChannel.MethodCallHandler, PluginRegistry.Activ
       // Before starting an update, register a listener for updates.
       appUpdateManager?.registerListener(updateListener)
     }
+    appUpdateManager!!.startUpdateFlow(
+      // Pass the intent that is returned by 'getAppUpdateInfo()'.
+      appUpdateInfo!!,
+      // an activity result launcher registered via registerForActivityResult
+      activity,
+      // Configure an update with AppUpdateOptions
+      AppUpdateOptions.newBuilder(type)
+        //Allows the update flow to delete Asset Packs from the app's storage before attempting to update the app, in case of insufficient storage.
+        //.setAllowAssetPackDeletion(true) // Default false
+        .build(),
+    );
     appUpdateManager!!.startUpdateFlowForResult(
       appUpdateInfo!!,
       type,

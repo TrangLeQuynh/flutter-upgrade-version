@@ -3,7 +3,6 @@ import 'package:flutter_upgrade_version/src/util_service.dart';
 /// VersionInfo
 ///
 class VersionInfo {
-
   /// The package version
   String? _localVersion;
 
@@ -40,12 +39,12 @@ class VersionInfo {
   /// Return True if Version 1 is bigger than Version 2, otherwise
   ///
   bool? _checkBigger(String? ver1, String? ver2) {
-    if (!UtilService.validateVersion(ver1) || !UtilService.validateVersion(ver2)) {
+    if (!UtilService.validateVersion(ver1) ||
+        !UtilService.validateVersion(ver2)) {
       return null;
     }
     return UtilService.compareVersion(ver1!, ver2!) == 1;
   }
-
 
   /// An instance of the VersionInfo
   /// Constructor
@@ -65,11 +64,11 @@ class VersionInfo {
 
   /// Converts [instance] to a JSON object.
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'localVersion' : _localVersion,
-    'storeVersion' : _storeVersion,
-    'appStoreLink' : _appStoreLink,
-    'releaseNotes' : _releaseNotes,
-    'isReviewing' : _isReviewing,
-    "canUpdate" : _canUpdate,
-  };
+        'localVersion': _localVersion,
+        'storeVersion': _storeVersion,
+        'appStoreLink': _appStoreLink,
+        'releaseNotes': _releaseNotes,
+        'isReviewing': _isReviewing,
+        "canUpdate": _canUpdate,
+      };
 }

@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter_upgrade_version/flutter_upgrade_version.dart';
@@ -30,7 +31,6 @@ class _MyAppState extends State<MyApp> {
     // message was in flight, we want to discard the reply rather than calling
     // setState to update our non-existent appearance.
     if (!mounted) return;
-
     _packageInfo = await PackageManager.getPackageInfo();
     setState(() {});
   }
@@ -42,43 +42,62 @@ class _MyAppState extends State<MyApp> {
     // });
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: SizedBox(
-          width: double.infinity,
-          child: SingleChildScrollView(
-            physics: const ClampingScrollPhysics(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(height: 20),
-                Text(
-                  'Version: ${_packageInfo.version}',
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    // getPackageData();
-                    // UpgradeVersion.getUpgradeVersionInfo().then((value) {
-                    //   print(value?.toJson());
-                    // });
-
-                    InAppUpdateManager _manager = InAppUpdateManager();
-                    _manager.checkForUpdate().then((value) {
-                      debugPrint("check for update done");
-                      debugPrint('$value');
-                    });
-                  },
-                  child: const Text('Refresh'),
-                ),
-                const SizedBox(height: 20),
-              ],
-            ),
+          appBar: AppBar(
+            title: const Text('Plugin example app'),
           ),
-        )
-      ),
+          body: SizedBox(
+            width: double.infinity,
+            child: SingleChildScrollView(
+              physics: const ClampingScrollPhysics(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 20),
+                  Text(
+                    'Version: ${_packageInfo.version}',
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () async {
+                      _packageInfo = await PackageManager.getPackageInfo();
+                      if (Platform.isAndroid) {
+                        InAppUpdateManager manager = InAppUpdateManager();
+                        AppUpdateInfo appUpdateInfo =
+                            await manager.checkForUpdate();
+                        if (appUpdateInfo.updateAvailability ==
+                            UpdateAvailability
+                                .developerTriggeredUpdateInProgress) {
+                          //If an in-app update is already running, resume the update.
+                          await manager.startAnUpdate(
+                              type: AppUpdateType.immediate);
+                        } else if (appUpdateInfo.updateAvailability ==
+                            UpdateAvailability.updateAvailable) {
+                          ///Update available
+                          if (appUpdateInfo.immediateAllowed) {
+                            await manager.startAnUpdate(
+                                type: AppUpdateType.immediate);
+                          } else if (appUpdateInfo.flexibleAllowed) {
+                            await manager.startAnUpdate(
+                                type: AppUpdateType.flexible);
+                          } else {
+                            debugPrint(
+                                'Update available. Immediate & Flexible Update Flow not allow');
+                          }
+                        }
+                      } else if (Platform.isIOS) {
+                        VersionInfo? _versionInfo =
+                            await UpgradeVersion.getiOSStoreVersion(
+                                _packageInfo);
+                      }
+                    },
+                    child: const Text('Check Update'),
+                  ),
+                  const SizedBox(height: 20),
+                ],
+              ),
+            ),
+          )),
     );
   }
 }
