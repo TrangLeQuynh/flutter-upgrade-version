@@ -130,12 +130,6 @@ class InAppUpdateHandler : MethodChannel.MethodCallHandler, PluginRegistry.Activ
         //.setAllowAssetPackDeletion(true) // Default false
         .build(),
     );
-    appUpdateManager!!.startUpdateFlowForResult(
-      appUpdateInfo!!,
-      type,
-      activity,
-      REQUEST_CODE_START_IN_APP_UPDATE
-    )
   }
 
   private fun unregisterUpdate() {
