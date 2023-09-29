@@ -2,15 +2,15 @@
 
 A Flutter plugin for Android, iOS allowing get information about package, version info.
 
-|                | Android | iOS      |
-|----------------|:-:|:-:|
-| **Support**   |`:white_check_mark:` |`:white_check_mark:`| 
+|                | Android | iOS |
+|:----------------| :-----: | :-----:|
+| **Support**   | ✅ | ✅ | 
 
 
 ## Features
 
 * Get Package Information (app name, package name, version, build number).
-* Get Information of Version at store (CH Play, Apple Store).
+* Get Information of Version at store (Apple Store).
 * Support In App Update - Android
 
 ## Installation
@@ -19,7 +19,7 @@ First, add `flutter_upgrade_version` as a [dependency in your pubspec.yaml file]
 
 ```dart
     dependencies
-        flutter_upgrade_version: ^1.0.8
+flutter_upgrade_version: ^1.0.8
 ```
 
 ## In-app Updates
@@ -45,29 +45,26 @@ Immediate updates are fullscreen UX flows that require the user to update and re
 
 ## Usage
 
-You can use FlutterUpgradeVersion to get information about the package.
+You can use `PackageManager` to get information about the package.
 
 ```dart
 import 'package:flutter_upgrade_version/flutter_upgrade_version.dart';
 
 Future<void> getPackageData() async {
-    PackageInfo _packageInfo = await PackageManager.getPackageInfo();
+  PackageInfo _packageInfo = await PackageManager.getPackageInfo();
 
-    ///
-    ///_packageInfo.appName;
-    ///_packageInfo.packageName;
-    ///_packageInfo.version;
-    ///_packageInfo.buildNumber;
-  }
+  ///
+  ///_packageInfo.appName;
+  ///_packageInfo.packageName;
+  ///_packageInfo.version;
+  ///_packageInfo.buildNumber;
+}
 ```
 
-You can get the app information on the Store through ID - package_name. You need to make sure the ID alrealy exits on the Store.
+> `Android`: Using **In-app Update**
+> `iOS`: You can get the app information on the Store through ID - package_name. You need to make sure the ID already exits on the Store.
 
 ```dart
-///Short Syntax - Support Android & iOS
-///This function is a combination of two functions:  UpgradeVersion.getAndroidStoreVersion &  UpgradeVersion.getiOSStoreVersion
-VersionInfo? _versionInfo = await UpgradeVersion.getUpgradeVersionInfo();
-
 /// Android
 if (Platform.isAndroid) {
   InAppUpdateManager manager = InAppUpdateManager();
@@ -102,7 +99,7 @@ if (Platform.isIOS) {
 ```
 
 With <span style='color:blue'>VersionInfo</span> class, I have provided information about:
- 
+
 * **canUpdate**: Return **true** if app can update.
 
 * **isReviewing**: Return **true** if app is reviewing.
@@ -117,6 +114,8 @@ With <span style='color:blue'>VersionInfo</span> class, I have provided informat
 
 
 ### In-app Update message
+
+>Note: `startAnUpdate()` return String? (a notification message). When update successfully, message is `nullable`.
 
 | Message | Description |
 |----------------|----------------|
