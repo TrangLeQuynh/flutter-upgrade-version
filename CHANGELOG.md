@@ -35,3 +35,7 @@
 ## 1.0.8
 
 * Fix issue when start an update
+
+## 1.0.9
+
+* Update README.md
