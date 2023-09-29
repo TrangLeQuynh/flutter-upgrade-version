@@ -62,6 +62,7 @@ Future<void> getPackageData() async {
 ```
 
 > `Android`: Using **In-app Update**
+
 > `iOS`: You can get the app information on the Store through ID - package_name. You need to make sure the ID already exits on the Store.
 
 ```dart
