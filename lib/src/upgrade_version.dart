@@ -82,9 +82,14 @@ abstract class UpgradeVersion {
 
   /// Get Upgrade version
   /// Support Only iOS
-  static Future<VersionInfo> getiOSStoreVersion(PackageInfo packageInfo) async {
+  //
+  // You need to pass country code as param if app is available on specific iTune store.
+  static Future<VersionInfo> getiOSStoreVersion({ required PackageInfo packageInfo, String? regionCode }) async {
     final id = packageInfo.packageName;
-    final parameters = {"bundleId": id};
+    final parameters = {
+      "bundleId": id,
+      "country" : regionCode,
+    };
     var uri = Uri.https("itunes.apple.com", "/lookup", parameters);
     Map<String, dynamic> _storeVersionGet =
         await getVersion(uri, MethodType.getType);
