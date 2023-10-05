@@ -14,11 +14,14 @@ class PackageInfoHandler {
 
   private func getPackageInfo(_ result: @escaping FlutterResult)-> Void {
     let dictionary = Bundle.main.infoDictionary ?? [:]
+    let locale = NSLocale.current
     let info: [String: Any?] = [
       "appName" : dictionary["CFBundleDisplayName"] ?? dictionary["CFBundleName"],
       "packageName" : dictionary["CFBundleIdentifier"],
       "version" : dictionary["CFBundleShortVersionString"],
-      "buildNumber" : dictionary["CFBundleVersion"]
+      "buildNumber" : dictionary["CFBundleVersion"],
+      "languageCode" : locale.languageCode,
+      "regionCode" : locale.regionCode,
     ]
     result(info)
   }

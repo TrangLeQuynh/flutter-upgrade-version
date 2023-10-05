@@ -39,3 +39,9 @@
 ## 1.0.9
 
 * Update README.md
+
+## 1.1.0
+
+* Remove `getAndroidStoreVersion`. Use `InAppUpdateManager` for Android Device instead.
+* Add `languageCode` and `regionCode` into PackageInfo
+* Need `regionCode` to ensure `getiOSStoreVersion` function works.

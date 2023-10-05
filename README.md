@@ -18,8 +18,8 @@ A Flutter plugin for Android, iOS allowing get information about package, versio
 First, add `flutter_upgrade_version` as a [dependency in your pubspec.yaml file](https://flutter.dev/using-packages/).
 
 ```dart
-    dependencies
-flutter_upgrade_version: ^1.0.8
+dependencies
+  flutter_upgrade_version: ^1.1.0
 ```
 
 ## In-app Updates
@@ -45,6 +45,7 @@ Immediate updates are fullscreen UX flows that require the user to update and re
 
 ## Usage
 
+### Package Information
 You can use `PackageManager` to get information about the package.
 
 ```dart
@@ -52,19 +53,22 @@ import 'package:flutter_upgrade_version/flutter_upgrade_version.dart';
 
 Future<void> getPackageData() async {
   PackageInfo _packageInfo = await PackageManager.getPackageInfo();
-
-  ///
-  ///_packageInfo.appName;
-  ///_packageInfo.packageName;
-  ///_packageInfo.version;
-  ///_packageInfo.buildNumber;
 }
 ```
 
-> `Android`: Using **In-app Update**
+> `PackageInfo` class - Fields:
+> - `appName` : the app name
+> - `packageName` : the package name
+> - `version` : the package version
+> - `buildNumber` : the build number
+> - `languageCode` : the language code of Locale.
+> - `regionCode` : the country/region code for this locale. ISO 3166 alpha-2 country code
 
-> `iOS`: You can get the app information on the Store through ID - package_name. You need to make sure the ID already exits on the Store.
+### `Android`: Using **In-app Update**
 
+> **Note**: Be mindful of how often you request updates to avoid annoying or tiring your users. You should only request in-app updates for changes that are important to the core functionality of your app.
+
+> 
 ```dart
 /// Android
 if (Platform.isAndroid) {
@@ -72,7 +76,7 @@ if (Platform.isAndroid) {
   AppUpdateInfo? appUpdateInfo = await manager.checkForUpdate();
   if (appUpdateInfo == null) return; //Exception
   if (appUpdateInfo.updateAvailability == UpdateAvailabilitydeveloperTriggeredUpdateInProgress) {
-    //If an in-app update is already running, resume the update.
+    ///If an in-app update is already running, resume the update.
     String? message = await manager.startAnUpdate(type: AppUpdateType.immediate);
     ///message return null when run update success 
   } else if (appUpdateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
@@ -90,11 +94,31 @@ if (Platform.isAndroid) {
     }
   }
 }
+```
 
-///
+### `iOS`: Information of Version on the Apple Store
+We get the app information on Apple Store throught the `package_name` and `regionCode`. 
+
+- You need to make sure the ID already exits on the Store.
+
+- `RegionCode` where your app will be available to purchase or download. If  your app is not available across countries or regions, you can't lookup the app information on iTunes Search API. <br/>AppStoreConnect: **My Apps** > **AppName** > **Pricing and Availability** > **App Availability**
+
+<br/>
+
+> **Recommnend to ensure the `getiOSStoreVersion` function works**: The version number is shown on the App Store and should match the one you used in Xcode.![add_store_version](assets/apple_store_version.png)
+
+| Parameter | Description | 
+| :-----: | :----- |
+| `packageInfo` | **Required.** <br/>`PackageManager.getPackageInfo`|
+| `regionCode` | **Optional**. The default is **US** <br/>The two-letter country code for the store you want to search. The search uses the default store front for the specified country. <br/>*See [ISO_3166-1_alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) for a list of ISO Country Codes.* 
+```dart
 ///iOS
 if (Platform.isIOS) {
-  VersionInfo? _versionInfo2 = await UpgradeVersion.getiOSStoreVersion(_packageInfo);
+  VersionInfo? _versionInfo2 = await UpgradeVersion.getiOSStoreVersion(
+    packageInfo: _packageInfo, 
+    regionCode: 'VN',
+  );
+  ///Example: VN - Viet Nam
 }
 
 ```
