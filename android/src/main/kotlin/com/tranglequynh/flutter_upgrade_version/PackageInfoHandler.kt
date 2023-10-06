@@ -34,12 +34,15 @@ class PackageInfoHandler :  MethodChannel.MethodCallHandler {
   fun getPackageInfo(result: MethodChannel.Result) {
     val packageManager = this.context.packageManager
     val info = packageManager.getPackageInfo(context.packageName, 0)
+    val defaultLocale = Locale.getDefault()
     val data = mapOf<String, String?>(
       "appName" to info.applicationInfo.loadLabel(packageManager).toString(),
       "packageName" to info.packageName,
       "version" to info.versionName,
 //      "versionCode" to info.versionCode.toString(),
-      "buildNumber" to getLongVersionCode(info).toString()
+      "buildNumber" to getLongVersionCode(info).toString(),
+      "languageCode" to defaultLocale.getLanguage(),
+      "regionCode" to defaultLocale.getCountry(),
     )
     result.success(data)
   }
