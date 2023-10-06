@@ -88,8 +88,10 @@ class _MyAppState extends State<MyApp> {
                         }
                       }
                     } else if (Platform.isIOS) {
-                      VersionInfo? _versionInfo = await UpgradeVersion.getiOSStoreVersion(packageInfo: _packageInfo, regionCode: "US");
-                      print(_versionInfo.toJson());
+                      VersionInfo? _versionInfo =
+                          await UpgradeVersion.getiOSStoreVersion(
+                              packageInfo: _packageInfo, regionCode: "US");
+                      debugPrint(_versionInfo.toJson().toString());
                     }
                   },
                   child: const Text('Check Update'),
