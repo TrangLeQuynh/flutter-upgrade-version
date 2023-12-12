@@ -1,4 +1,9 @@
-## 1.1.2
+
+# 1.1.3
+
+* Add namespace for support Gradle `8.0`
+
+# 1.1.2
 
 * Support min SDK `3.0.0`
 
