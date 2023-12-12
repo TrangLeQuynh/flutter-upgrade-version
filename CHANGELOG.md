@@ -1,9 +1,8 @@
+## 1.1.3
 
-# 1.1.3
+* Android: Adds a `namespace` for compatibility with AGP 8.0
 
-* Add namespace for support Gradle `8.0`
-
-# 1.1.2
+## 1.1.2
 
 * Support min SDK `3.0.0`
 
