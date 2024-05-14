@@ -75,7 +75,7 @@ if (Platform.isAndroid) {
   InAppUpdateManager manager = InAppUpdateManager();
   AppUpdateInfo? appUpdateInfo = await manager.checkForUpdate();
   if (appUpdateInfo == null) return; //Exception
-  if (appUpdateInfo.updateAvailability == UpdateAvailabilitydeveloperTriggeredUpdateInProgress) {
+  if (appUpdateInfo.updateAvailability == UpdateAvailability.developerTriggeredUpdateInProgress) {
     ///If an in-app update is already running, resume the update.
     String? message = await manager.startAnUpdate(type: AppUpdateType.immediate);
     ///message return null when run update success 
