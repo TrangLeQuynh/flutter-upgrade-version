@@ -17,8 +17,8 @@ class VersionInfo {
   String? _releaseNotes;
 
   /// Is this version reviewing?
-  /// True | False
-  late bool _isReviewing;
+  /// True | False | null
+  late bool? _isReviewing;
 
   /// Is this the latest version?
   /// True if It is not latest version, otherwise
@@ -33,7 +33,7 @@ class VersionInfo {
   set appStoreLink(String? appStoreLink) => _appStoreLink = appStoreLink;
   String get releaseNotes => _releaseNotes ?? '';
   set releaseNotes(String? releaseNotes) => _releaseNotes = releaseNotes;
-  bool get isReviewing => _isReviewing;
+  bool? get isReviewing => _isReviewing;
   bool get canUpdate => _canUpdate;
 
   /// Return True if Version 1 is bigger than Version 2, otherwise
@@ -58,7 +58,7 @@ class VersionInfo {
     _storeVersion = storeVersion;
     _appStoreLink = appStoreLink;
     _releaseNotes = releaseNotes;
-    _isReviewing = _checkBigger(localVersion, storeVersion) ?? true;
+    _isReviewing = _checkBigger(localVersion, storeVersion);
     _canUpdate = _checkBigger(storeVersion, localVersion) ?? false;
   }
 

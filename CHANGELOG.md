@@ -1,3 +1,7 @@
+## 1.1.4
+
+* iOS: `isReviewing` can be null
+
 ## 1.1.3
 
 * Android: Adds a `namespace` for compatibility with AGP 8.0
