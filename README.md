@@ -19,12 +19,14 @@ First, add `flutter_upgrade_version` as a [dependency in your pubspec.yaml file]
 
 ```dart
 dependencies
-  flutter_upgrade_version: ^1.1.3
+  flutter_upgrade_version: ^1.1.4
 ```
 
 ## In-app Updates
 
 The in-app updates feature is supported on devices running Android 5.0 (API level 21) or higher. Additionally, in-app updates are only supported for Android mobile devices, Android tablets, and ChromeOS devices.
+
+[How to test In-App Update](https://medium.com/@tranglequynh710/how-to-test-in-app-update-in-android-be48562d445d)
 
 Your app can use the Google Play Core libraries to support the following UX flows for in-app updates:
 
