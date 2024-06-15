@@ -57,13 +57,13 @@ class InAppUpdateHandler : MethodChannel.MethodCallHandler, PluginRegistry.Activ
 
   override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
     when (call.method) {
-      "checkForUpdate" -> checkForUpdate(call, result)
+      "checkForUpdate" -> checkForUpdate(result)
       "startAnUpdate" -> startAnUpdate(call, result)
       else -> result.notImplemented()
     }
   }
 
-  private fun checkForUpdate(call: MethodCall, result: MethodChannel.Result) {
+  private fun checkForUpdate(result: MethodChannel.Result) {
     appUpdateManager = AppUpdateManagerFactory.create(activity.applicationContext)
 
     // Returns an intent object that you use to check for an update.
