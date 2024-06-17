@@ -14,7 +14,7 @@ class PackageInfoHandler :  MethodChannel.MethodCallHandler {
 
   private var context: Context
   private val binaryMessenger: BinaryMessenger
-  private val packageInfoChannel: MethodChannel
+  private var packageInfoChannel: MethodChannel
 
   constructor(context: Context, binaryMessenger: BinaryMessenger) {
     this.context = context
@@ -33,7 +33,7 @@ class PackageInfoHandler :  MethodChannel.MethodCallHandler {
 
   fun getPackageInfo(result: MethodChannel.Result) {
     val packageManager = this.context.packageManager
-    val info = packageManager.getPackageInfo(context.packageName, 0)
+    val info = packageManager.getPackageInfoCompatibility(context.packageName)
     val defaultLocale = Locale.getDefault()
     val data = mapOf<String, String?>(
       "appName" to info.applicationInfo.loadLabel(packageManager).toString(),
@@ -48,6 +48,15 @@ class PackageInfoHandler :  MethodChannel.MethodCallHandler {
   }
 
   @Suppress("deprecation")
+  fun PackageManager.getPackageInfoCompatibility(packageName: String): PackageInfo {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+      return getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(0))
+    } else {
+      return getPackageInfo(packageName, 0)
+    }
+  }
+
+  @Suppress("deprecation")
   private fun getLongVersionCode(info: PackageInfo): Long {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
       return info.longVersionCode
@@ -56,7 +65,7 @@ class PackageInfoHandler :  MethodChannel.MethodCallHandler {
   }
 
   fun stopHandle() {
-    this.packageInfoChannel?.setMethodCallHandler(null)
+    this.packageInfoChannel.setMethodCallHandler(null)
   }
 
 }
