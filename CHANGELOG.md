@@ -1,3 +1,7 @@
+## 1.1.5
+
+* Android API 33, getPackageInfo(String, Int): PackageInfo! was deprecated.
+
 ## 1.1.4
 
 * iOS: `isReviewing` can be null

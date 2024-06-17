@@ -16,7 +16,7 @@ import io.flutter.plugin.common.PluginRegistry
 class InAppUpdateHandler : MethodChannel.MethodCallHandler, PluginRegistry.ActivityResultListener {
   private var activity: Activity
   private val binaryMessenger: BinaryMessenger
-  private val inAppUpdateChannel: MethodChannel
+  private var inAppUpdateChannel: MethodChannel
 
   private var appUpdateManager: AppUpdateManager? = null
   private var appUpdateInfo: AppUpdateInfo? = null
@@ -95,7 +95,7 @@ class InAppUpdateHandler : MethodChannel.MethodCallHandler, PluginRegistry.Activ
   /// After you confirm that an update is available, you can request an update using
   private fun startAnUpdate(call: MethodCall, result: MethodChannel.Result) {
     val args = call.arguments as Map<String, Any>
-    val type = when(args["appUpdateType"] as Int) {
+    val type = when(args["appUpdateType"]) {
       0 -> AppUpdateType.FLEXIBLE
       1 -> AppUpdateType.IMMEDIATE
       else -> null
@@ -151,7 +151,7 @@ class InAppUpdateHandler : MethodChannel.MethodCallHandler, PluginRegistry.Activ
 
   fun stopHandle() {
     unregisterUpdate()
-    this.inAppUpdateChannel?.setMethodCallHandler(null)
+    this.inAppUpdateChannel.setMethodCallHandler(null)
   }
 
   companion object {
