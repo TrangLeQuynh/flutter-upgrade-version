@@ -32,6 +32,7 @@ abstract class UpgradeVersion {
       localVersion: packageInfo.version,
       storeVersion: _storeVersion['storeVersion'],
       appStoreLink: _storeVersion['appStoreLink'],
+      releaseDate: _storeVersion['releaseDate'],
     );
   }
 
@@ -51,6 +52,7 @@ abstract class UpgradeVersion {
         'storeVersion': _version,
         'appStoreLink': _jsonObj['results'][0]['trackViewUrl'],
         'releaseNotes': _jsonObj['results'][0]['releaseNotes'],
+        'releaseDate': _jsonObj['results'][0]['currentVersionReleaseDate'],
       };
     } catch (e) {
       return {};

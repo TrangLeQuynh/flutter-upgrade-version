@@ -24,15 +24,24 @@ class VersionInfo {
   /// True if It is not latest version, otherwise
   late bool _canUpdate;
 
+  ///
+  DateTime? _releaseDate;
+
   /// Getter & Setter
   String get localVersion => _localVersion ?? '';
   set localVersion(String? localVersion) => _localVersion = localVersion;
+
   String get storeVersion => _storeVersion ?? '';
   set storeVersion(String? storeVersion) => _storeVersion = storeVersion;
+
   String get appStoreLink => _appStoreLink ?? '';
   set appStoreLink(String? appStoreLink) => _appStoreLink = appStoreLink;
+
   String get releaseNotes => _releaseNotes ?? '';
   set releaseNotes(String? releaseNotes) => _releaseNotes = releaseNotes;
+
+  DateTime? get releaseDate => _releaseDate;
+
   bool? get isReviewing => _isReviewing;
   bool get canUpdate => _canUpdate;
 
@@ -53,11 +62,16 @@ class VersionInfo {
     String? storeVersion,
     String? appStoreLink,
     String? releaseNotes,
+    String? releaseDate,
   }) {
     _localVersion = localVersion;
     _storeVersion = storeVersion;
     _appStoreLink = appStoreLink;
     _releaseNotes = releaseNotes;
+    if (releaseDate?.isNotEmpty == true) {
+      _releaseDate = DateTime.parse(releaseDate!);
+    }
+
     _isReviewing = _checkBigger(localVersion, storeVersion);
     _canUpdate = _checkBigger(storeVersion, localVersion) ?? false;
   }
@@ -68,7 +82,8 @@ class VersionInfo {
         'storeVersion': _storeVersion,
         'appStoreLink': _appStoreLink,
         'releaseNotes': _releaseNotes,
+        'releaseDate': _releaseDate,
         'isReviewing': _isReviewing,
-        "canUpdate": _canUpdate,
+        'canUpdate': _canUpdate,
       };
 }

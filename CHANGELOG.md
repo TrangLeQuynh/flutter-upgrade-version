@@ -1,3 +1,7 @@
+## 1.1.6
+
+* iOS: `releaseDate` - The release date of current version on the store. 
+
 ## 1.1.5
 
 * Android API 33, getPackageInfo(String, Int): PackageInfo! was deprecated.

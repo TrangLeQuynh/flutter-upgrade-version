@@ -19,7 +19,7 @@ First, add `flutter_upgrade_version` as a [dependency in your pubspec.yaml file]
 
 ```dart
 dependencies
-  flutter_upgrade_version: ^1.1.5
+  flutter_upgrade_version: ^1.1.6
 ```
 
 ## In-app Updates
@@ -134,6 +134,8 @@ With <span style='color:blue'>VersionInfo</span> class, I have provided informat
 * **localVersion**: The current version of app.
 
 * **storeVersion**: The current version of app on the store.
+
+* **releaseDate**: The release date of current version on the store.
 
 * **appStoreLink**: Link connect to App Store.
 
