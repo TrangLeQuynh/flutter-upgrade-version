@@ -32,19 +32,22 @@ class PackageInfoHandler :  MethodChannel.MethodCallHandler {
   }
 
   fun getPackageInfo(result: MethodChannel.Result) {
-    val packageManager = this.context.packageManager
-    val info = packageManager.getPackageInfoCompatibility(context.packageName)
-    val defaultLocale = Locale.getDefault()
-    val data = mapOf<String, String?>(
-      "appName" to info.applicationInfo.loadLabel(packageManager).toString(),
-      "packageName" to info.packageName,
-      "version" to info.versionName,
-//      "versionCode" to info.versionCode.toString(),
-      "buildNumber" to getLongVersionCode(info).toString(),
-      "languageCode" to defaultLocale.getLanguage(),
-      "regionCode" to defaultLocale.getCountry(),
-    )
-    result.success(data)
+    try {
+      val packageManager = this.context.packageManager
+      val info = packageManager.getPackageInfoCompatibility(context.packageName)
+      val defaultLocale = Locale.getDefault()
+      val data = mapOf<String, String?>(
+        "appName" to info.applicationInfo?.loadLabel(packageManager)?.toString(),
+        "packageName" to info.packageName,
+        "version" to info.versionName,
+        "buildNumber" to getLongVersionCode(info).toString(),
+        "languageCode" to defaultLocale.getLanguage(),
+        "regionCode" to defaultLocale.getCountry(),
+      )
+      result.success(data)
+    } catch (e: Exception) {
+      result.error("ERROR", e.message, null)
+    }
   }
 
   @Suppress("deprecation")
@@ -59,7 +62,7 @@ class PackageInfoHandler :  MethodChannel.MethodCallHandler {
   @Suppress("deprecation")
   private fun getLongVersionCode(info: PackageInfo): Long {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-      return info.longVersionCode
+      return info.getLongVersionCode()
     }
     return info.versionCode.toLong()
   }
