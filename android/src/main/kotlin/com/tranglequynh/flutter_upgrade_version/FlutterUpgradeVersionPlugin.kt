@@ -13,11 +13,11 @@ class FlutterUpgradeVersionPlugin: FlutterPlugin, ActivityAware {
   private var inAppUpdateHandler: InAppUpdateHandler? = null
   private var activity: ActivityPluginBinding? = null
 
-  override fun onAttachedToEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
+  override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
     this.flutterPluginBinding = binding
   }
 
-  override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
+  override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
     this.flutterPluginBinding = null
   }
 
