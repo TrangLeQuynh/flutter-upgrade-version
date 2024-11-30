@@ -94,6 +94,7 @@ class InAppUpdateHandler : MethodChannel.MethodCallHandler, PluginRegistry.Activ
 
   /// After you confirm that an update is available, you can request an update using
   private fun startAnUpdate(call: MethodCall, result: MethodChannel.Result) {
+    @Suppress("UNCHECKED_CAST")
     val args = call.arguments as Map<String, Any>
     val type = when(args["appUpdateType"]) {
       0 -> AppUpdateType.FLEXIBLE
