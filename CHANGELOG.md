@@ -1,3 +1,7 @@
+## 1.1.8
+
+* Set Target Java 17 on Android
+
 ## 1.1.7
 
 * Set the namespace with AGP > 4.2

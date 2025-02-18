@@ -19,7 +19,7 @@ First, add `flutter_upgrade_version` as a [dependency in your pubspec.yaml file]
 
 ```dart
 dependencies
-  flutter_upgrade_version: ^1.1.7
+  flutter_upgrade_version: ^1.1.8
 ```
 
 ## In-app Updates
