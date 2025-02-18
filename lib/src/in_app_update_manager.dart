@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import '../config/flutter_upgrade_version_config.dart';
 import '../models/app_update_info.dart';
 import '../platforms/in_app_update_platform.dart';
 
@@ -9,7 +8,7 @@ import '../platforms/in_app_update_platform.dart';
 /// Implements from InAppUpdatePlatform
 class InAppUpdateManager implements InAppUpdatePlatform {
   static const MethodChannel _channel =
-      MethodChannel(FlutterUpgradeVersionConfig.inAppUpdateChannel);
+      MethodChannel('com.tranglequynh.flutter-upgrade-version/in-app-update');
 
   /// checkForUpdate
   /// Return AppUpdateInfo

@@ -1,5 +1,4 @@
 import 'package:flutter/services.dart';
-import 'package:flutter_upgrade_version/config/flutter_upgrade_version_config.dart';
 import 'package:flutter_upgrade_version/models/package_info.dart';
 
 /// Package Manager
@@ -8,7 +7,7 @@ class PackageManager {
   ///
   /// Package Info Channel
   static const MethodChannel _channel =
-      MethodChannel(FlutterUpgradeVersionConfig.packageInfoChannel);
+      MethodChannel('com.tranglequynh.flutter-upgrade-version/package-info');
 
   /// Returns a map with the following keys
   /// version, packageName, appName,buildNumber
