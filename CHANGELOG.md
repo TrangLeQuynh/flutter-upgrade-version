@@ -1,3 +1,8 @@
+## 1.1.7
+
+* Set the namespace with AGP > 4.2
+* Fix: Add Kotlin null safety in PackageInfoHandler.kt:39:40
+
 ## 1.1.6
 
 * iOS: `releaseDate` - The release date of current version on the store. 
