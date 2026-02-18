@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import '../models/app_update_info.dart';
 
 /// The interface that implementations of in-app-update must implement
@@ -15,5 +16,17 @@ abstract class InAppUpdatePlatform {
 
   /// After you confirm that an update is available, you can request an update
   /// Android support: Flexible updates and Immediate updates
-  Future<String?> startAnUpdate({AppUpdateType type = AppUpdateType.flexible});
+  /// [completeOnDownload] - if true, automatically completes update when downloaded (default: true)
+  /// if false, you must manually call completeUpdate() to restart the app
+  /// [onUpdateDownloaded] - callback triggered when update finishes downloading (only if completeOnDownload = false)
+
+  Future<String?> startAnUpdate({
+    AppUpdateType type = AppUpdateType.flexible,
+    bool completeOnDownload = true,
+    VoidCallback? onUpdateDownloaded,
+  });
+
+  /// Manually complete a flexible update after download
+  /// Only needed when startAnUpdate was called with completeOnDownload = false
+  Future<String?> completeUpdate();
 }

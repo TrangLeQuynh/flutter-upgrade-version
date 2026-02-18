@@ -23,6 +23,8 @@ class InAppUpdateHandler : MethodChannel.MethodCallHandler, PluginRegistry.Activ
 
   private var pendingResult: MethodChannel.Result? = null
 
+  private var completeOnDownload: Boolean = true
+
   constructor(activity: Activity, binaryMessenger: BinaryMessenger) {
     this.activity = activity
     this.binaryMessenger = binaryMessenger
@@ -59,6 +61,7 @@ class InAppUpdateHandler : MethodChannel.MethodCallHandler, PluginRegistry.Activ
     when (call.method) {
       "checkForUpdate" -> checkForUpdate(result)
       "startAnUpdate" -> startAnUpdate(call, result)
+      "completeUpdate" -> completeUpdate(result)
       else -> result.notImplemented()
     }
   }
@@ -93,7 +96,7 @@ class InAppUpdateHandler : MethodChannel.MethodCallHandler, PluginRegistry.Activ
   }
 
   /// After you confirm that an update is available, you can request an update using
-  private fun startAnUpdate(call: MethodCall, result: MethodChannel.Result) {
+  private fun startAnUpdate(call: MethodCall, result: MethodChannel.Result) { 
     @Suppress("UNCHECKED_CAST")
     val args = call.arguments as Map<String, Any>
     val type = when(args["appUpdateType"]) {
@@ -101,6 +104,9 @@ class InAppUpdateHandler : MethodChannel.MethodCallHandler, PluginRegistry.Activ
       1 -> AppUpdateType.IMMEDIATE
       else -> null
     }
+
+    completeOnDownload = args["completeOnDownload"] as? Boolean ?: true
+
     requireNotNull(type) {
       result.error("ERROR", "MSG_APP_UPDATE_TYPE_NO_SUPPORT", null)
     }
@@ -130,6 +136,22 @@ class InAppUpdateHandler : MethodChannel.MethodCallHandler, PluginRegistry.Activ
     )
   }
 
+  private fun completeUpdate(result: MethodChannel.Result) {
+    if (appUpdateManager == null) {
+      result.error("ERROR", "MSG_APP_UPDATE_MANAGER_NOT_INITIALIZED", null)
+      return
+    }
+    
+    appUpdateManager!!.completeUpdate()
+      .addOnSuccessListener {
+        result.success(null)
+        // App will restart here automatically
+      }
+      .addOnFailureListener { error ->
+        result.error("ERROR", "MSG_COMPLETE_UPDATE_FAILED", error.message)
+      }
+  }
+
   private fun unregisterUpdate() {
     // When status updates are no longer needed, unregister the listener.
     appUpdateManager?.unregisterListener(updateListener)
@@ -141,7 +163,13 @@ class InAppUpdateHandler : MethodChannel.MethodCallHandler, PluginRegistry.Activ
       // and request user confirmation to restart the app.
       pendingResult?.success(null)
       pendingResult = null
-      appUpdateManager?.completeUpdate()
+      if (completeOnDownload) {
+        appUpdateManager?.completeUpdate()
+      } else {
+        activity.runOnUiThread {
+          inAppUpdateChannel.invokeMethod("onUpdateDownloaded", null)
+        }
+      }
       unregisterUpdate()
     } else if (it.installErrorCode() != InstallErrorCode.NO_ERROR) {
       pendingResult?.error("ERROR", "MSG_UPDATE_LISTENER_ERROR", null)
