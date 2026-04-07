@@ -1,3 +1,7 @@
+## 1.1.9
+
+* Added Swift Package Manager support for iOS.
+
 ## 1.1.8
 
 * Set Target Java 17 on Android
