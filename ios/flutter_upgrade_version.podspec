@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   s.license          = { :type=> 'MIT', :file => '../LICENSE' }
   s.author           = { 'TrangLeQuynh' => 'tranglequynh710@gmail.com' }
   s.source           = { :git => 'https://github.com/TrangLeQuynh' }
-  s.source_files = 'Classes/**/*'
+  s.source_files = 'flutter_upgrade_version/Sources/flutter_upgrade_version/**/*.swift'
   s.dependency 'Flutter'
   s.platform = :ios, '9.0'
 
