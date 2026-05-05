@@ -1,3 +1,6 @@
+import Foundation
+import Flutter
+
 class PackageInfoHandler {
 
   init(with registrar: FlutterPluginRegistrar) {
