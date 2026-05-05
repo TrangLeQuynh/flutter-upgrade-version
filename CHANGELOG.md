@@ -1,3 +1,7 @@
+## 1.1.9
+
+* Support Swift Package manager
+
 ## 1.1.8
 
 * Set Target Java 17 on Android
