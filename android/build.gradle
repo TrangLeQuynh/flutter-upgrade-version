@@ -21,23 +21,29 @@ rootProject.allprojects {
     }
 }
 
+// Skip applying kotlin-android only when the consuming app opted into AGP's built-in Kotlin via
+// android.builtInKotlin=true. Applying it on top of built-in Kotlin fails ("extension with name 'kotlin' already
+// registered"), while dropping it unconditionally on AGP 9 would break apps that keep the flag at its default false:
+// Flutter's FlutterPluginUtils.detectApplyingKotlinGradlePlugin decides whether to auto-apply kotlin-android by
+// regex-matching the literal "apply plugin: 'kotlin-android'" text in this file — it does not evaluate the condition.
+// Keeping the line present means Flutter stays out of the way, and this guard decides at runtime.
+def builtInKotlinEnabled = (project.findProperty('android.builtInKotlin') ?: 'false').toString().toBoolean()
+
 apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
+if (!builtInKotlinEnabled) {
+    apply plugin: 'kotlin-android'
+}
 
 android {
     /// Conditional for compatibility with AGP < 4.2
 //    if (project.android.hasProperty("namespace")) {
     namespace 'com.tranglequynh.flutter_upgrade_version'
 //    }
-    compileSdkVersion 35
+    compileSdk = 35
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = '17'
     }
 
     sourceSets {
@@ -45,7 +51,7 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 21
+        minSdk = 21
     }
 }
 
