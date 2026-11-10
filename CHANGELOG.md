@@ -1,3 +1,10 @@
+## Unreleased
+
+* Android: migrates to built-in Kotlin. The `buildscript` block, the `rootProject.allprojects` repositories and the `kotlin-android` plugin are removed, `kotlinOptions` is replaced by `kotlin { compilerOptions { jvmTarget = JVM_17 } }`. Apps on AGP 9 compile the plugin with built-in Kotlin, apps on AGP 8 keep working because Flutter 3.44+ applies the Kotlin Gradle plugin itself
+* Android: use the new DSL (`compileSdk`, `minSdk`)
+* Updates the minimum supported SDK version to Flutter 3.44/Dart 3.12
+* Example app migrated to AGP 9.5 with built-in Kotlin (Gradle 9.9)
+
 ## 1.1.9
 
 * Support Swift Package manager
