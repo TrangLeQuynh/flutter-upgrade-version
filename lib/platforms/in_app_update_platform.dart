@@ -1,4 +1,5 @@
 import '../models/app_update_info.dart';
+import '../models/in_app_update_exception.dart';
 
 /// The interface that implementations of in-app-update must implement
 ///
@@ -15,5 +16,11 @@ abstract class InAppUpdatePlatform {
 
   /// After you confirm that an update is available, you can request an update
   /// Android support: Flexible updates and Immediate updates
-  Future<String?> startAnUpdate({AppUpdateType type = AppUpdateType.flexible});
+  ///
+  /// Completes normally if the user accepted the update.
+  ///
+  /// Throws [InAppUpdateException] otherwise. Check [InAppUpdateException.code]
+  /// for the reason, e.g. [InAppUpdateErrorCode.userCanceled] when the user
+  /// denied or canceled the update.
+  Future<void> startAnUpdate({AppUpdateType type = AppUpdateType.flexible});
 }
