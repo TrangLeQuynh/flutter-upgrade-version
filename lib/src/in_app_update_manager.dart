@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import '../models/app_update_info.dart';
+import '../models/in_app_update_exception.dart';
 import '../platforms/in_app_update_platform.dart';
 
 /// InAppUpdateManager
@@ -26,16 +27,18 @@ class InAppUpdateManager implements InAppUpdatePlatform {
 
   /// startAnUpdate
   @override
-  Future<String?> startAnUpdate(
-      {AppUpdateType type = AppUpdateType.flexible}) async {
+  Future<void> startAnUpdate({AppUpdateType type = AppUpdateType.flexible}) async {
     try {
-      await _channel
-          .invokeMethod('startAnUpdate', {'appUpdateType': type.index});
-      return null;
-    } on PlatformException catch (e) {
-      return e.message;
-    } on Exception catch (e) {
-      return 'Exception: ${e.toString()}';
+      await _channel.invokeMethod('startAnUpdate', {'appUpdateType': type.index});
+    } on PlatformException catch (e, stackTrace) {
+      Error.throwWithStackTrace(
+        InAppUpdateException(
+          code: InAppUpdateErrorCode.fromPlatformCode(e.code),
+          message: e.message, 
+          details: e.details,
+        ),
+        stackTrace,
+      ); 
     }
   }
 }

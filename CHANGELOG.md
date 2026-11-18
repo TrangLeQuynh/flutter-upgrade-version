@@ -1,3 +1,8 @@
+## 2.0.0
+
+* **Breaking**: `startAnUpdate()` now returns `Future<void>` instead of `Future<String?>`. It completes when the user accepts the update and throws `InAppUpdateException` otherwise, including when the user cancels.
+* Add `InAppUpdateErrorCode` (`userCanceled`, `updateFailed`, `updateTypeNotSupported`, `checkForUpdateRequired`, `installFailed`, `unknown`)
+
 ## 1.1.9
 
 * Support Swift Package manager

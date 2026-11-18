@@ -7,3 +7,4 @@ export 'platforms/in_app_update_platform.dart';
 export 'models/package_info.dart';
 export 'models/version_info.dart';
 export 'models/app_update_info.dart';
+export 'models/in_app_update_exception.dart';

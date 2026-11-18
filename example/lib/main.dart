@@ -35,6 +35,15 @@ class _MyAppState extends State<MyApp> {
     setState(() {});
   }
 
+  Future<void> _startUpdate(InAppUpdateManager manager, AppUpdateType type) async {
+    try {
+      await manager.startAnUpdate(type: type);
+      debugPrint('The user accepted the update');
+    } on InAppUpdateException catch (e) {
+      debugPrint('In-app update failed: ${e.code} - ${e.message}');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -68,20 +77,14 @@ class _MyAppState extends State<MyApp> {
                           UpdateAvailability
                               .developerTriggeredUpdateInProgress) {
                         //If an in-app update is already running, resume the update.
-                        String? message = await manager.startAnUpdate(
-                            type: AppUpdateType.immediate);
-                        debugPrint(message ?? '');
+                        await _startUpdate(manager, AppUpdateType.immediate);
                       } else if (appUpdateInfo.updateAvailability ==
                           UpdateAvailability.updateAvailable) {
                         ///Update available
                         if (appUpdateInfo.immediateAllowed) {
-                          String? message = await manager.startAnUpdate(
-                              type: AppUpdateType.immediate);
-                          debugPrint(message ?? '');
+                          await _startUpdate(manager, AppUpdateType.immediate);
                         } else if (appUpdateInfo.flexibleAllowed) {
-                          String? message = await manager.startAnUpdate(
-                              type: AppUpdateType.flexible);
-                          debugPrint(message ?? '');
+                          await _startUpdate(manager, AppUpdateType.flexible);
                         } else {
                           debugPrint(
                               'Update available. Immediate & Flexible Update Flow not allow');
