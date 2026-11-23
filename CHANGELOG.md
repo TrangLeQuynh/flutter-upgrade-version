@@ -5,6 +5,11 @@
 * Updates the minimum supported SDK version to Flutter 3.44/Dart 3.12
 * Example app migrated to AGP 9.5 with built-in Kotlin (Gradle 9.9)
 
+## 2.0.0
+
+* **Breaking**: `startAnUpdate()` now returns `Future<void>` instead of `Future<String?>`. It completes when the user accepts the update and throws `InAppUpdateException` otherwise, including when the user cancels.
+* Add `InAppUpdateErrorCode` (`userCanceled`, `updateFailed`, `updateTypeNotSupported`, `checkForUpdateRequired`, `installFailed`, `unknown`)
+
 ## 1.1.9
 
 * Support Swift Package manager

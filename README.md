@@ -19,7 +19,7 @@ First, add `flutter_upgrade_version` as a [dependency in your pubspec.yaml file]
 
 ```dart
 dependencies
-  flutter_upgrade_version: ^1.1.8
+  flutter_upgrade_version: ^2.0.0
 ```
 
 ## In-app Updates
@@ -77,23 +77,24 @@ if (Platform.isAndroid) {
   InAppUpdateManager manager = InAppUpdateManager();
   AppUpdateInfo? appUpdateInfo = await manager.checkForUpdate();
   if (appUpdateInfo == null) return; //Exception
-  if (appUpdateInfo.updateAvailability == UpdateAvailability.developerTriggeredUpdateInProgress) {
-    ///If an in-app update is already running, resume the update.
-    String? message = await manager.startAnUpdate(type: AppUpdateType.immediate);
-    ///message return null when run update success 
-  } else if (appUpdateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
-    ///Update available
-    if (appUpdateInfo.immediateAllowed) {
-      debugPrint('Start an immediate update');
-      String? message = await manager.startAnUpdate(type: AppUpdateType.immediate);
-      ///message return null when run update success 
-    } else if (appUpdateInfo.flexibleAllowed) {
-      debugPrint('Start an flexible update');
-      String? message = await manager.startAnUpdate(type: AppUpdateType.flexible);
-      ///message return null when run update success
-    } else {
-      debugPrint('Update available. Immediate & Flexible Update Flow not allow');
+  try {
+    if (appUpdateInfo.updateAvailability == UpdateAvailability.developerTriggeredUpdateInProgress) {
+      ///If an in-app update is already running, resume the update.
+      await manager.startAnUpdate(type: AppUpdateType.immediate);
+    } else if (appUpdateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
+      ///Update available
+      if (appUpdateInfo.immediateAllowed) {
+        debugPrint('Start an immediate update');
+        await manager.startAnUpdate(type: AppUpdateType.immediate);
+      } else if (appUpdateInfo.flexibleAllowed) {
+        debugPrint('Start an flexible update');
+        await manager.startAnUpdate(type: AppUpdateType.flexible);
+      } else {
+        debugPrint('Update available. Immediate & Flexible Update Flow not allow');
+      }
     }
+  } on InAppUpdateException catch (e) {
+    debugPrint('In-app update failed: ${e.code} - ${e.message}');
   }
 }
 ```
@@ -142,14 +143,69 @@ With <span style='color:blue'>VersionInfo</span> class, I have provided informat
 * **releaseNotes**: The notes of version on the store.
 
 
-### In-app Update message
+### In-app Update result
 
->Note: `startAnUpdate()` return String? (a notification message). When update successfully, message is `nullable`.
+`startAnUpdate()` completes normally when the user accepts the update.
 
-| Message | Description |
+Otherwise it throws an `InAppUpdateException`, including when the user cancels. It contains:
+
+- `code`: an `InAppUpdateErrorCode` describing why the update did not proceed. Use it to decide what to do and what to show.
+- `message`: a human-readable description.
+- `details`: additional platform information, if any.
+
+| `code` (`InAppUpdateErrorCode`) | Description |
 |----------------|----------------|
-| **MSG_USER_HAS_DENIED_OR_CANCELED_THE_UPDATE** | The user has denied or canceled the update. | 
-| **MSG_RESULT_IN_APP_UPDATE_FAILED** | Some other error prevented either the user from providing consent or the update from proceeding.|
-| **MSG_APP_UPDATE_TYPE_NO_SUPPORT** | AppUpdateType not support|
-| **MSG_REQUIRE_CHECK_FOR_UPDATE** | Required call `checkForUpdate` before `startAnUpdate` |
-| **MSG_UPDATE_LISTENER_ERROR**| |
+| `userCanceled` | The user has denied or canceled the update. |
+| `updateFailed` | Some other error prevented either the user from providing consent or the update from proceeding.|
+| `updateTypeNotSupported` | The requested `AppUpdateType` is not supported. |
+| `checkForUpdateRequired` | `checkForUpdate` must be called before `startAnUpdate`. |
+| `installFailed` | The update failed while downloading or installing. `details` holds the Play Core `InstallErrorCode`. |
+| `unknown` | An error not covered by the values above. |
+
+#### Showing errors to users (localization)
+
+`message` is always in English and is not meant to be shown to users. To display an error in the user's language, map `code` to your own localized text:
+
+```dart
+String mapErrorToLocalizedMessage(BuildContext context, InAppUpdateErrorCode code) {
+  final l10n = AppLocalizations.of(context)!; // your app's localizations
+  return switch (code) {
+    InAppUpdateErrorCode.userCanceled => l10n.updateCanceled,
+    InAppUpdateErrorCode.updateFailed => l10n.updateFailed,
+    InAppUpdateErrorCode.updateTypeNotSupported => l10n.updateNotSupported,
+    InAppUpdateErrorCode.checkForUpdateRequired => l10n.updateFailed,
+    InAppUpdateErrorCode.installFailed => l10n.updateInstallFailed,
+    InAppUpdateErrorCode.unknown => l10n.updateFailed,
+  };
+}
+
+try {
+  await manager.startAnUpdate(type: AppUpdateType.flexible);
+} on InAppUpdateException catch (e) {
+  debugPrint('In-app update failed: ${e.code} - ${e.message}'); // log in English
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(content: Text(mapErrorToLocalizedMessage(context, e.code))),
+  );
+}
+```
+
+#### Version comparison: < 2.0.0 vs >= 2.0.0
+
+In versions before `2.0.0`, `startAnUpdate()` returns `Future<String?>`: `null` when the update succeeds, otherwise one of the messages below. No exception is thrown.
+
+```dart
+String? message = await manager.startAnUpdate(type: AppUpdateType.immediate);
+if (message != null) {
+  debugPrint('In-app update failed: $message');
+}
+```
+
+| Message (< 2.0.0) | `InAppUpdateErrorCode` (>= 2.0.0) | Description |
+|----------------|----------------|----------------|
+| **MSG_USER_HAS_DENIED_OR_CANCELED_THE_UPDATE** | `userCanceled` | The user has denied or canceled the update. |
+| **MSG_RESULT_IN_APP_UPDATE_FAILED** | `updateFailed` | Some other error prevented either the user from providing consent or the update from proceeding. |
+| **MSG_APP_UPDATE_TYPE_NO_SUPPORT** | `updateTypeNotSupported` | AppUpdateType not support |
+| **MSG_REQUIRE_CHECK_FOR_UPDATE** | `checkForUpdateRequired` | Required call `checkForUpdate` before `startAnUpdate` |
+| **MSG_UPDATE_LISTENER_ERROR** | `installFailed` | The update failed while downloading or installing. |
+
+To migrate to `2.0.0`, replace the `null` check with a `try`/`catch` on `InAppUpdateException`, and compare `e.code` instead of the message string.

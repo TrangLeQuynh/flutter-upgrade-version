@@ -40,11 +40,11 @@ class InAppUpdateHandler : MethodChannel.MethodCallHandler, PluginRegistry.Activ
         }
         Activity.RESULT_CANCELED -> {
           ///The user has denied or canceled the update.
-          pendingResult?.error("RESULT_CANCEL", "MSG_USER_HAS_DENIED_OR_CANCELED_THE_UPDATE", null)
+          pendingResult?.error(InAppUpdateErrorCode.USER_CANCELED)
         }
         ActivityResult.RESULT_IN_APP_UPDATE_FAILED -> {
           ///Some other error prevented either the user from providing consent or the update from proceeding.
-          pendingResult?.error("RESULT_IN_APP_UPDATE_FAILED", "MSG_RESULT_IN_APP_UPDATE_FAILED", null)
+          pendingResult?.error(InAppUpdateErrorCode.UPDATE_FAILED)
         }
       }
       pendingResult = null
@@ -88,7 +88,7 @@ class InAppUpdateHandler : MethodChannel.MethodCallHandler, PluginRegistry.Activ
         result.success(data)
       }
       .addOnFailureListener { error ->
-        result.error("ERROR", "MSG_UPDATE_INFO_TASK_EXCEPTION", error.message)
+        result.error(InAppUpdateErrorCode.CHECK_FOR_UPDATE_FAILED, error.message)
       }
   }
 
@@ -102,13 +102,13 @@ class InAppUpdateHandler : MethodChannel.MethodCallHandler, PluginRegistry.Activ
       else -> null
     }
     requireNotNull(type) {
-      result.error("ERROR", "MSG_APP_UPDATE_TYPE_NO_SUPPORT", null)
+      result.error(InAppUpdateErrorCode.UPDATE_TYPE_NOT_SUPPORTED)
     }
     requireNotNull(appUpdateManager) {
-      result.error("ERROR", "MSG_REQUIRE_CHECK_FOR_UPDATE", null)
+      result.error(InAppUpdateErrorCode.CHECK_FOR_UPDATE_REQUIRED)
     }
     requireNotNull(appUpdateInfo) {
-      result.error("ERROR", "MSG_REQUIRE_CHECK_FOR_UPDATE", null)
+      result.error(InAppUpdateErrorCode.CHECK_FOR_UPDATE_REQUIRED)
     }
     pendingResult = result
     if (type == AppUpdateType.FLEXIBLE) {
@@ -144,7 +144,7 @@ class InAppUpdateHandler : MethodChannel.MethodCallHandler, PluginRegistry.Activ
       appUpdateManager?.completeUpdate()
       unregisterUpdate()
     } else if (it.installErrorCode() != InstallErrorCode.NO_ERROR) {
-      pendingResult?.error("ERROR", "MSG_UPDATE_LISTENER_ERROR", null)
+      pendingResult?.error(InAppUpdateErrorCode.INSTALL_FAILED, it.installErrorCode())
       pendingResult = null
       unregisterUpdate()
     }
