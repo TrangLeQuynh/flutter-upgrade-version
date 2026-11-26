@@ -1,51 +1,22 @@
 group 'com.tranglequynh.flutter_upgrade_version'
 version '1.0-SNAPSHOT'
 
-buildscript {
-    ext.kotlin_version = '2.1.0'
-    repositories {
-        google()
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath 'com.android.tools.build:gradle:8.7.3'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-}
-
-rootProject.allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-
+//no `kotlin-android` plugin and no compat guard: with AGP 9's built-in Kotlin (the default) AGP compiles the Kotlin
+//sources; on AGP 8, or AGP 9 with `android.builtInKotlin=false`, Flutter applies KGP to the plugin itself (since 3.44 —
+//hence the Flutter floor in pubspec.yaml).
 apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
 
 android {
-    /// Conditional for compatibility with AGP < 4.2
-//    if (project.android.hasProperty("namespace")) {
     namespace 'com.tranglequynh.flutter_upgrade_version'
-//    }
-    compileSdkVersion 35
+    compileSdk = 35
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = '17'
-    }
-
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-    }
-
     defaultConfig {
-        minSdkVersion 21
+        minSdk = 21
     }
 }
 
@@ -53,4 +24,12 @@ dependencies {
     implementation 'com.google.android.play:app-update:2.1.0'
     // For Kotlin users, also add the clean extensions library for Play In-App Update:
     implementation 'com.google.android.play:app-update-ktx:2.1.0'
+}
+
+//jvmTarget has to match `compileOptions` above: under built-in Kotlin AGP fails the build when the two differ, and
+//Kotlin otherwise follows the JDK toolchain (https://docs.flutter.dev/release/breaking-changes/migrate-to-built-in-kotlin/for-plugin-authors)
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+    }
 }
